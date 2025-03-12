@@ -37,7 +37,7 @@ public class JournalEntryControllerV2 {
     }
 
     @DeleteMapping("id/{myID}")  // More conventional
-    public  JournalEntry void removeById(@PathVariable  ObjectId id) {
+    public void removeById(@PathVariable  ObjectId id) {
          journalentryservice.DeletebyID(myID);
 
     }

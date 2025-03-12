@@ -36,7 +36,7 @@ public class JournalEntry {
         this.id = id;
     }
 
-    // Aditya chutiya h
+
 
 
     public String getNames() {
