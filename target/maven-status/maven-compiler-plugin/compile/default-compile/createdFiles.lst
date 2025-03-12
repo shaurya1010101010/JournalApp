@@ -1,0 +1,6 @@
+net/engineeringdigest/journalApp/MyClass.class
+net/engineeringdigest/journalApp/JournalApplication.class
+net/engineeringdigest/journalApp/Entity/JournalEntry.class
+net/engineeringdigest/journalApp/Controller/JournalEntryControllerV2.class
+net/engineeringdigest/journalApp/service/Journalentryservice.class
+net/engineeringdigest/journalApp/Repository/JournalEntryRepo.class
