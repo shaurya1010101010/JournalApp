@@ -72,5 +72,7 @@ public class JournalEntry {
     // Setter for content
     public void setContent(String content) {
         this.content = content;
+
+        // this is entry class
     }
 }
