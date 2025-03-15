@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
+//this code is shit.
 // Marks this class as a REST Controller that handles web requests
 @RestController
 @RequestMapping("/journal") // Base URL for all endpoints in this controller
