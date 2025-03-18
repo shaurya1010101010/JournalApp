@@ -133,7 +133,7 @@ public class JournalEntryControllerV2 {
                     .body(old);
         }
 
-        // Entry not found
+
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body("Entry not found with ID: " + id);  // this returns response entity
