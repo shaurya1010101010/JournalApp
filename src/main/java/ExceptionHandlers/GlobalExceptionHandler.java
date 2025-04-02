@@ -10,17 +10,30 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public  class GlobalExceptionHandler {
 
-
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> handleGenericException(IllegalArgumentException ex) {
+    public ErrorResponse handleGenericException(IllegalArgumentException ex) {
+        System.out.println("test1");
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
                 ex.getMessage(),
                 "ERR_500" // Custom error code
         );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return response;
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleGenericException(Exception ex) {
+        System.out.println("test2");
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Internal Server Error",
+                ex.getMessage(),
+                "ERR_500" // Custom error code
+        );
+        return response;
     }
 
 }
