@@ -3,6 +3,7 @@ package net.engineeringdigest.journalApp.Controller;
 // Importing necessary dependencies for the controller
 import net.engineeringdigest.journalApp.Entity.JournalEntry;
 import net.engineeringdigest.journalApp.service.Journalentryservice;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,12 @@ public class JournalEntryControllerV2 {
     @PostMapping
     public ResponseEntity<String> createEntry(@RequestBody JournalEntry myEntry) {
         try {
-            // Automatically set the current date and time before saving
+            if (Strings.isBlank(myEntry.getTitle())){
+                throw new IllegalArgumentException("title is empty");
+
+                //
+            }
+          // Automatically set the current date and time before saving
             myEntry.setDate(LocalDateTime.now());
 
             // Save the entry in the database

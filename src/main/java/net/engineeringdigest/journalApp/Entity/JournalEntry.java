@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 public class JournalEntry {
 
     // MongoDB's primary key field
-    @Id
-    private ObjectId id;
+
+
 
     // Entry fields for the journal
     private String names;   // Author's name
