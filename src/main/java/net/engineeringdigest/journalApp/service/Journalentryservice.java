@@ -6,11 +6,13 @@ import net.engineeringdigest.journalApp.Repository.JournalEntryRepo;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
 // Marks this class as a Spring component (Bean), allowing dependency injection
-@Component
+@Service
 public class Journalentryservice {
 
     // Injects the repository for data interaction with MongoDB

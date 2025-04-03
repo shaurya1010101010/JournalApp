@@ -142,6 +142,17 @@ public class JournalEntryControllerV2 {
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body("Entry not found with ID: " + id);  // this returns response entity
+                .body("Entry not found with ID: " + id);// this returns response entity
+
+
+
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<JournalEntry>> searchEntries(@RequestParam String title) {
+        List<JournalEntry> entries = journalentryService.searchByTitle(title);
+        return ResponseEntity.ok(entries);
+    }
+
+
 }
