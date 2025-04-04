@@ -3,76 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journal App</title>
+    <title>Chronicle Notes - Capture & Create</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #16181d;
+            --app-bg-color: #1c1f26;
+            --sidebar-bg: rgba(35, 39, 48, 0.8);
+            --header-bg: rgba(28, 31, 38, 0.75);
+            --surface-color: #2a2e37;
+            --surface-highlight: #363a45;
+            --border-color: #454a59;
+            --text-color: #e8edf3;
+            --text-muted-color: #9fb1cc;
+            --text-heading-color: #ffffff;
+            --primary-accent: #60a5fa;
+            --secondary-accent: #f472b6;
+            --danger-color: #f87171;
+            --shadow-color-light: rgba(0, 0, 0, 0.25);
+            --shadow-color-medium: rgba(0, 0, 0, 0.45);
+            --sidebar-width: 260px;
+            --header-height: 70px;
+            --content-max-width: 1300px;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
-            background-color: black;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            color: white;
+            background-color: var(--bg-color);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.6;
         }
-        .container {
-            width: 50%;
-            margin: 30px auto 0;
-            background: #222;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
-            position: relative;
-            top: -30px;
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted-color); }
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 40px 20px; color: white; position: relative; overflow: hidden;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
         }
-        input, textarea {
-            width: 90%;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
+        .hero::before {
+             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+             background-color: rgba(26, 29, 36, 0.75); z-index: 1;
         }
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #ff9800;
-            color: white;
-            cursor: pointer;
+        .hero > * { position: relative; z-index: 2; }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
         }
-        .entries {
-            margin-top: 20px;
+        .hero h1 { font-size: clamp(2.5em, 6vw, 4em); font-weight: 700; margin-bottom: 20px; text-shadow: 0 3px 15px rgba(0,0,0,0.6); }
+        .hero h1 .highlight { color: var(--secondary-accent); }
+        .hero p.description { font-size: clamp(1em, 2vw, 1.2em); max-width: 700px; margin: 0 auto 40px auto; color: var(--text-color); opacity: 0.95; line-height: 1.7; }
+        .hero-icons { display: flex; gap: 30px; margin-bottom: 40px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4)); }
+        .hero-icons svg { width: clamp(30px, 6vw, 50px); height: auto; fill: var(--text-muted-color); opacity: 0.6; transition: opacity 0.3s ease, transform 0.3s ease; }
+        .hero-icons svg:hover { opacity: 0.9; transform: scale(1.1); }
+        .hero .scroll-down { position: absolute; bottom: 30px; left: 50%; color: var(--text-muted-color); text-decoration: none; font-size: 0.9em; display: flex; flex-direction: column; align-items: center; animation: bounce 2s infinite; z-index: 2; }
+        .hero .scroll-down span { margin-bottom: 5px; }
+        .hero .scroll-down svg { width: 24px; height: 24px; fill: currentColor; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translate(-50%, 0);} 40% {transform: translate(-50%, -10px);} 60% {transform: translate(-50%, -5px);} }
+        .app-container {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            grid-template-rows: var(--header-height) 1fr auto;
+            grid-template-areas: "sidebar header" "sidebar main" "sidebar footer";
+            min-height: 100vh; position: relative;
+            background-color: var(--app-bg-color);
+            background-image:
+                linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+                linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+                linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+                linear-gradient(315deg, rgba(255,255,255,0.03) 25%, var(--app-bg-color) 25%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 0, 10px -10px, 0px 10px;
         }
-        .logo {
-            width: 100px;
-            margin-bottom: 10px;
+        .header {
+            grid-area: header; background-color: var(--header-bg);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            padding: 0 35px; display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
         }
+        .header .logo-container { display: flex; align-items: center; }
+        .logo { width: 30px; height: auto; margin-right: 12px; opacity: 0.9; }
+        .header-title { font-size: 1.3em; font-weight: 600; color: var(--text-heading-color); }
+        .header-title .app-name { color: var(--text-muted-color); font-weight: 400; }
+        .search-container { position: relative; width: 40%; max-width: 400px; }
+        .search-container input[type="search"] {
+            width: 100%; padding: 10px 15px 10px 40px; border-radius: 20px;
+            border: 1px solid var(--border-color); background-color: var(--surface-color);
+            color: var(--text-color); font-size: 0.95em; transition: all 0.2s ease;
+        }
+        .search-container input[type="search"]::placeholder { color: var(--text-muted-color); opacity: 0.8; }
+        .search-container input[type="search"]:focus {
+            outline: none; border-color: var(--primary-accent);
+            background-color: var(--surface-highlight);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+        .search-container .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted-color); pointer-events: none; }
+        .search-container .ai-indicator {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            font-size: 0.7em; font-weight: 500; color: var(--primary-accent);
+            background-color: rgba(96, 165, 250, 0.1); padding: 2px 6px;
+            border-radius: 4px; pointer-events: none;
+         }
+        .sidebar {
+            grid-area: sidebar; background-color: var(--sidebar-bg);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            padding: 30px 20px; border-right: 1px solid var(--border-color);
+            display: flex; flex-direction: column; gap: 35px; overflow-y: auto; z-index: 50;
+        }
+        .sidebar h3 {
+            color: var(--text-muted-color); margin: 0 0 15px 10px;
+            font-weight: 500; font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.8px;
+        }
+        .sidebar nav a {
+             color: var(--text-color); text-decoration: none; display: flex; align-items: center;
+             gap: 12px; padding: 10px 15px; font-size: 0.98em; border-radius: 6px;
+             transition: background-color 0.2s ease, color 0.2s ease; margin-bottom: 5px;
+         }
+         .sidebar nav a:hover { background-color: rgba(255, 255, 255, 0.08); color: var(--text-heading-color); }
+         .sidebar nav a svg { width: 18px; height: 18px; opacity: 0.7; transition: opacity 0.2s ease; fill: currentColor;}
+         .sidebar nav a:hover svg { opacity: 1; }
+        .tips-section {
+            background-color: rgba(0,0,0,0.15); border-radius: 8px;
+            padding: 15px; border: 1px solid var(--border-color);
+        }
+        .tips-section h3 { margin: 0 0 10px 0; color: var(--text-color); }
+        .tips-section p { color: var(--text-muted-color); font-size: 0.88em; line-height: 1.5; margin-bottom: 8px; }
+        .tips-section p strong { color: var(--primary-accent); font-weight: 500; }
+        .main-content-area {
+            grid-area: main; padding: 40px 50px; overflow-y: auto;
+            max-width: var(--content-max-width); margin: 0 auto; width: 100%;
+        }
+        .form-container h2 { color: var(--text-heading-color); margin-bottom: 30px; font-size: 1.8em; }
+        .form-container h2 .icon { color: var(--primary-accent); font-size: 1em; opacity: 1; }
+        input[type="text"], textarea, input[type="search"] {
+            width: 100%; box-sizing: border-box; margin-bottom: 20px; padding: 14px 18px;
+            border-radius: 8px; border: 1px solid var(--border-color);
+            background-color: var(--surface-highlight); color: var(--text-color);
+            font-family: inherit; font-size: 1em;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+         input::placeholder, textarea::placeholder { color: var(--text-muted-color); }
+        input:focus, textarea:focus {
+            outline: none; border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25); background-color: var(--surface-color);
+        }
+        textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
+        button.submit-btn {
+            padding: 12px 25px; border: none; border-radius: 6px;
+            background-image: linear-gradient(to right, var(--primary-accent) 0%, var(--secondary-accent) 100%);
+            color: white; cursor: pointer; font-size: 1em; font-weight: 500;
+            transition: all 0.3s ease; display: inline-block; width: auto; margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        button.submit-btn:hover { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); transform: translateY(-2px); opacity: 0.95; }
+        button.submit-btn:active { transform: translateY(0px) scale(0.98); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); }
+        .entries-section { margin-top: 50px; }
+        .entries-container h2 {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px; font-size: 1.8em; color: var(--text-heading-color);
+        }
+        .entries-container h2 .icon { color: var(--secondary-accent); }
+        #entry-count {
+             font-size: 0.8em; font-weight: 500; color: white;
+             background-image: linear-gradient(to right, var(--primary-accent), var(--secondary-accent));
+             padding: 4px 10px; border-radius: 12px; margin-left: 10px;
+             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #entries-list {
+            list-style: none; padding: 0; margin: 0; display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px;
+        }
+        .entry-card {
+            background-color: var(--surface-color); border-radius: 10px;
+            border: 1px solid var(--border-color); box-shadow: 0 5px 15px var(--shadow-color-light);
+            position: relative; overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .entry-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px var(--shadow-color-medium); border-color: var(--primary-accent); }
+        .entry-card img.entry-image { width: 100%; height: 180px; object-fit: cover; display: block; border-bottom: 1px solid var(--border-color); }
+        .card-content { padding: 20px 25px; }
+        .entry-card h3 { color: var(--text-heading-color); margin: 0 0 8px 0; font-weight: 600; font-size: 1.25em; line-height: 1.4; }
+        .entry-card .content {
+             white-space: pre-wrap; word-wrap: break-word; color: var(--text-color); font-size: 0.95em; line-height: 1.6;
+             margin-bottom: 15px; max-height: 100px; overflow: hidden; position: relative;
+         }
+        .entry-card .content::after {
+             content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 25px; pointer-events: none;
+             background: linear-gradient(to bottom, transparent, var(--surface-color)); opacity: 1; transition: opacity 0.2s ease;
+         }
+        .entry-card:hover .content::after { opacity: 0; }
+        .entry-card .meta {
+            font-size: 0.8em; color: var(--text-muted-color); display: flex; justify-content: space-between; align-items: center;
+            padding-top: 10px; border-top: 1px dashed var(--border-color);
+        }
+        .entry-card .meta strong { color: var(--text-color); font-weight: 500; }
+        button.delete-btn {
+            position: absolute; top: 12px; right: 12px; background: rgba(44, 48, 58, 0.7); backdrop-filter: blur(5px);
+            color: var(--text-muted-color); border: 1px solid var(--border-color); border-radius: 50%;
+            width: 30px; height: 30px; cursor: pointer; font-size: 1.3em; line-height: 30px;
+            text-align: center; padding: 0; transition: all 0.2s ease; opacity: 0; z-index: 5;
+        }
+        .entry-card:hover button.delete-btn { opacity: 1; }
+        button.delete-btn:hover { background: var(--danger-color); color: white; border-color: transparent; transform: scale(1.1); }
+        .footer {
+            grid-area: footer; padding: 20px 50px; text-align: center; font-size: 0.9em;
+            color: var(--text-muted-color); border-top: 1px solid var(--border-color);
+            background-color: var(--sidebar-bg); backdrop-filter: blur(15px);
+        }
+        @media (max-width: 900px) {
+             .app-container { grid-template-columns: 1fr; grid-template-rows: var(--header-height) auto 1fr auto; grid-template-areas: "header" "sidebar" "main" "footer"; }
+             .sidebar { border-right: none; border-bottom: 1px solid var(--border-color); }
+             .main-content-area { padding: 30px 25px; max-width: none; margin: 0; }
+             .footer { padding: 20px 25px; }
+             .header { padding: 0 25px; }
+             .search-container { width: 50%; }
+             #entries-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;}
+        }
+        @media (max-width: 600px) {
+             body { font-size: 14px; }
+             .hero h1 { font-size: 2.2em; }
+             .hero p.description { font-size: 0.95em; }
+             .hero-icons { gap: 20px; }
+             .hero-icons svg { width: 35px; }
+             .app-container { grid-template-rows: 60px auto 1fr auto; }
+             .header { padding: 0 15px; }
+             .header-title { display: none; }
+             .search-container { display: none; }
+             .sidebar { padding: 20px 15px; }
+             .main-content-area { padding: 25px 15px; }
+             h2 { font-size: 1.5em; }
+             #entries-list { grid-template-columns: 1fr; gap: 15px;}
+             .entry-card img.entry-image { height: 150px; }
+             .card-content { padding: 15px 20px; }
+             .footer { padding: 15px; }
+             button.submit-btn { width: 100%; }
+         }
     </style>
 </head>
 <body>
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="Journal Logo" class="logo">
-<h1>Welcome to Journal</h1>
-<br></br>
-<div class="container">
-    <h2>Add Journal Entry</h2>
-    <input type="text" id="name" placeholder="Your Name">
-    <input type="text" id="title" placeholder="Title">
-    <textarea id="content" placeholder="Write your journal entry here..."></textarea>
-    <button onclick="addEntry()">Submit</button>
+
+<section class="hero" id="entry-point">
+    <h1>Your Digital <span class="highlight">Sanctuary</span></h1>
+    <p class="description">
+        Welcome to Chronicle Notes – the fluid, intuitive space designed to capture your thoughts, streamline your ideas, and organize your life. Secure, accessible, and beautifully simple. Start chronicling your world today.
+    </p>
+    <div class="hero-icons">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M19.049 4.9a.75.75 0 00-.998-.05l-6.3 4.2a.75.75 0 01-.998-.05L4.45 4.9a.75.75 0 00-1.05 1.05l4.2 6.3a.75.75 0 01-.05.998l-4.2 6.3a.75.75 0 001.05 1.05l6.3-4.2a.75.75 0 01.998.05l6.3 4.2a.75.75 0 001.05-1.05l-4.2-6.3a.75.75 0 01.05-.998l4.2-6.3a.75.75 0 00-.05-1.05zM18 9.562l-3.4 2.267a2.25 2.25 0 00-.148 2.992l3.4 5.1V9.562zm-5.45-.001l-3.4-2.267v10.21l3.4-5.1a2.25 2.25 0 00.148-2.992L12.55 9.56zM6 9.562v10.21l3.4-5.1a2.25 2.25 0 00.148-2.992L6 9.562z"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clip-rule="evenodd"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.5a.75.75 0 00.5.707A9.735 9.735 0 006 21a9.707 9.707 0 005.25-1.533.75.75 0 00.5-.68V5.213a.75.75 0 00-.5-.68zm3 0A9.707 9.707 0 0018 3a9.735 9.735 0 003.25.555.75.75 0 01.5.707v14.5a.75.75 0 01-.5.707A9.735 9.735 0 0118 21a9.707 9.707 0 01-5.25-1.533.75.75 0 01-.5-.68V5.213a.75.75 0 01.5-.68z"></path></svg>
+    </div>
+    <a href="#app-start" class="scroll-down">
+        <span>Explore Your Notes</span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+    </a>
+</section>
+
+<div class="app-container" id="app-start">
+    <header class="header">
+        <div class="logo-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="Chronicle Notes Logo" class="logo">
+            <div class="header-title"><span class="app-name">Chronicle</span> Notes</div>
+        </div>
+        <div class="search-container">
+                 <span class="search-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="currentColor" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+                 </span>
+            <input type="search" id="search-box" placeholder="Search notes...">
+            <span class="ai-indicator">AI ✨</span>
+        </div>
+        <div></div>
+    </header>
+
+    <aside class="sidebar">
+        <nav>
+            <h3>Workspace</h3>
+            <a href="#"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v1a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 3a1 1 0 011-1h10a1 1 0 011 1v1a1 1 0 01-1 1H6a1 1 0 01-1-1V7zm2 3.5a.5.5 0 01.5-.5h6a.5.5 0 010 1h-6a.5.5 0 01-.5-.5zM3 14a1 1 0 011-1h12a1 1 0 011 1v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-1z" clip-rule="evenodd"></path></svg> Dashboard</a>
+            <a href="#"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H5a1 1 0 110-2V4zm3 1a1 1 0 011-1h2a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg> All Notes</a>
+            <a href="#"><svg viewBox="0 0 20 20"><path d="M5.5 16.5A1.5 1.5 0 014 15V5a1.5 1.5 0 011.5-1.5h9A1.5 1.5 0 0116 5v10a1.5 1.5 0 01-1.5 1.5h-9zM5 5a.5.5 0 00-.5.5v10a.5.5 0 00.5.5h9a.5.5 0 00.5-.5V5a.5.5 0 00-.5-.5h-9z"></path><path d="M5.5 1a1 1 0 00-1 1v.5a.5.5 0 001 0V2h9v-.5a.5.5 0 001 0v-.5a1 1 0 00-1-1h-9z"></path></svg> Notebooks</a>
+            <a href="#"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a1 1 0 011-1h14a1 1 0 011 1v4.293zM16 5H4v5l7 7 7-7V5z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M6 7a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> Tags</a>
+        </nav>
+        <nav>
+            <h3>Tools & Extras</h3>
+            <a href="#"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M15.293 3.293a1 1 0 011.414 0l1 1a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.248-1.248l1-3a1 1 0 01.242-.39l9-9zM14 6l-8.5 8.5-1-1L13 5l1 1zm2-2l-1 1-1-1 1-1 1 1z" clip-rule="evenodd"></path></svg> Drawing Canvas</a>
+            <a href="#"><svg viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg> Collaborate</a>
+        </nav>
+        <nav>
+            <h3>Account</h3>
+            <a href="#"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.566.379-1.566 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.566 2.6 1.566 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.566-.379 1.566-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106A1.532 1.532 0 0111.49 3.17zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg> Settings</a>
+            <a href="#"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 100 2h12a1 1 0 100-2V4a1 1 0 00-1-1H3zm10.293 9.293a1 1 0 001.414-1.414L13.414 10l1.293-1.293a1 1 0 00-1.414-1.414L12 8.586l-1.293-1.293a1 1 0 00-1.414 1.414L10.586 10l-1.293 1.293a1 1 0 101.414 1.414L12 11.414l1.293 1.293z" clip-rule="evenodd"></path></svg> Logout</a>
+        </nav>
+        <div class="tips-section">
+            <h3>🚀 Quick Tips</h3>
+            <p><strong>Markdown:</strong> Use *italic*, **bold**, and `code` in your notes!</p>
+            <p><strong>Images:</strong> Add flair with cover image URLs.</p>
+            <p><strong>Search:</strong> Find notes instantly (AI coming soon!).</p>
+        </div>
+    </aside>
+
+    <main class="main-content-area">
+        <section class="form-section">
+            <div class="form-container">
+                <h2><span class="icon">✍️</span> Create a New Note</h2>
+                <form id="journal-form">
+                    <input type="text" id="name" placeholder="Author Name" required>
+                    <input type="text" id="title" placeholder="Note Title" required>
+                    <textarea id="content" placeholder="Start writing..." required></textarea>
+                    <input type="text" id="imageUrl" placeholder="Optional Cover Image URL (e.g., https://...)">
+                    <button type="submit" class="submit-btn">Save Note</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="entries-section">
+            <div class="entries-container">
+                <h2><span class="icon">📚</span> Your Notes <span id="entry-count"></span></h2>
+                <ul id="entries-list">
+                    <p style="text-align: center; color: var(--text-muted-color); padding: 40px 0;" id="no-entries-message">Loading notes...</p>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        &copy; <span id="current-year"></span> Chronicle Notes - Capture Your World.
+    </footer>
 </div>
-<div class="entries" id="entries"></div>
 
 <script>
-    function addEntry() {
-        let name = document.getElementById("name").value;
-        let title = document.getElementById("title").value;
-        let content = document.getElementById("content").value;
+    const journalForm = document.getElementById('journal-form');
+    const nameInput = document.getElementById('name');
+    const titleInput = document.getElementById('title');
+    const contentInput = document.getElementById('content');
+    const imageUrlInput = document.getElementById('imageUrl');
+    const entriesList = document.getElementById('entries-list');
+    const entryCountSpan = document.getElementById('entry-count');
+    const currentYearSpan = document.getElementById('current-year');
 
-        if(name && title && content) {
-            let entry = `<div style='border: 1px solid white; padding: 10px; margin: 10px;'>
-                            <h3>${title}</h3>
-                            <p><strong>By:</strong> ${name}</p>
-                            <p>${content}</p>
-                        </div>`;
-            document.getElementById("entries").innerHTML += entry;
+    document.addEventListener('DOMContentLoaded', () => {
+         currentYearSpan.textContent = new Date().getFullYear();
+         loadEntries();
+    });
+
+    function getEntries() {
+        return JSON.parse(localStorage.getItem('chronicleNotesEntries_fancyV4')) || [];
+    }
+    function saveEntries(entries) {
+        localStorage.setItem('chronicleNotesEntries_fancyV4', JSON.stringify(entries));
+    }
+
+     function loadEntries() {
+        const entries = getEntries();
+        renderEntries(entries);
+    }
+
+    function renderEntries(entries) {
+        entriesList.innerHTML = '';
+        if (entries.length > 0) {
+             entryCountSpan.textContent = `(${entries.length})`;
+        } else {
+             entryCountSpan.textContent = '(0)';
+             entriesList.innerHTML = '<p style="text-align: center; color: var(--text-muted-color); padding: 40px 0;" id="no-entries-message">No notes yet. Create one above!</p>';
+             return;
+        }
+        entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        entries.forEach(entry => {
+            const listItem = document.createElement('li');
+            listItem.classList.add('entry-card');
+            listItem.dataset.id = entry.id;
+            const entryDate = new Date(entry.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric'});
+            let imageHtml = '';
+            if (entry.imageUrl && (entry.imageUrl.startsWith('http://') || entry.imageUrl.startsWith('https://'))) {
+                 imageHtml = `<img src="${entry.imageUrl}" alt="Cover Image" class="entry-image" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('no-image');">`;
+            } else {
+                 listItem.classList.add('no-image');
+            }
+            listItem.innerHTML = `
+                ${imageHtml}
+                <div class="card-content">
+                    <h3>${escapeHtml(entry.title)}</h3>
+                    <p class="content">${escapeHtml(entry.content)}</p>
+                    <div class="meta">
+                         <span>By: <strong>${escapeHtml(entry.name)}</strong></span>
+                         <span>${entryDate}</span>
+                    </div>
+                </div>
+                <button class="delete-btn" title="Delete Note">&times;</button>
+            `;
+            entriesList.appendChild(listItem);
+        });
+    }
+
+    function addEntry(event) {
+        event.preventDefault();
+        const name = nameInput.value.trim();
+        const title = titleInput.value.trim();
+        const content = contentInput.value.trim();
+        const imageUrl = imageUrlInput.value.trim();
+        if (!name || !title || !content) {
+            alert('Please fill in Author Name, Note Title, and Content.'); return;
+        }
+        const newEntry = { id: Date.now(), name, title, content, imageUrl, timestamp: new Date().toISOString() };
+        const entries = getEntries();
+        entries.unshift(newEntry); saveEntries(entries); renderEntries(entries); journalForm.reset();
+    }
+    function handleEntryActions(event) {
+        if (event.target.classList.contains('delete-btn')) {
+            const entryCard = event.target.closest('.entry-card');
+            if (entryCard?.dataset.id) { const entryId = Number(entryCard.dataset.id); deleteEntry(entryId); }
         }
     }
+    function deleteEntry(idToDelete) {
+        if (!confirm('Are you sure you want to permanently delete this note?')) return;
+        let entries = getEntries(); entries = entries.filter(entry => entry.id !== idToDelete);
+        saveEntries(entries); renderEntries(entries);
+    }
+     function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') return unsafe;
+        return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+     }
+
+    journalForm.addEventListener('submit', addEntry);
+    entriesList.addEventListener('click', handleEntryActions);
 </script>
+
 </body>
 </html>
