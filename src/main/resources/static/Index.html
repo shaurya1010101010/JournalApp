@@ -3,432 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chronicle Notes - Capture Your World</title>
+    <title>Chronicle Notes - Welcome</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #16181d; --app-bg-color: #1c1f26; --sidebar-bg: rgba(35, 39, 48, 0.8);
-            --header-bg: rgba(28, 31, 38, 0.75); --surface-color: #2a2e37; --surface-highlight: #363a45;
-            --border-color: #454a59; --text-color: #e8edf3; --text-muted-color: #9fb1cc;
-            --text-heading-color: #ffffff; --primary-accent: #60a5fa; --secondary-accent: #f472b6;
-            --danger-color: #f87171; --success-color: #4ade80; --shadow-color-light: rgba(0, 0, 0, 0.25);
-            --shadow-color-medium: rgba(0, 0, 0, 0.45); --sidebar-width: 260px; --header-height: 70px;
-            --content-max-width: 1300px;
+            --bg-dark: #0a091a; /* Darker indigo/purple */
+            --primary-accent: #60a5fa; /* Vibrant Blue */
+            --secondary-accent: #d946ef; /* Fuchsia */
+            --tertiary-accent: #fde047; /* Yellow */
+            --text-light: #f0f0ff;
+            --text-muted: #a0a0c0;
+            --border-light: rgba(255, 255, 255, 0.15);
+            --surface-dark-alpha: rgba(15, 15, 30, 0.7); /* Darker surface */
+            --glow-primary: rgba(96, 165, 250, 0.5);
+            --glow-secondary: rgba(217, 70, 239, 0.5);
         }
         *, *::before, *::after { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
-            background-color: var(--bg-color); font-family: 'Poppins', sans-serif; color: var(--text-color);
-            margin: 0; font-size: 15px; line-height: 1.6; overflow-x: hidden;
+            font-family: 'Inter', sans-serif; color: var(--text-light);
+            background-color: var(--bg-dark); margin: 0; line-height: 1.7;
+            font-size: 16px; overflow-x: hidden;
         }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
-        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted-color); }
-
-        .hero {
-            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 60px 20px; color: white; position: relative; overflow: hidden;
-            background-image: url('https://source.unsplash.com/random/1920x1080/?workspace,technology,abstract,dark');
-            background-size: cover; background-position: center center; background-repeat: no-repeat;
+        .hero-container {
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; text-align: center; padding: 60px 20px;
+            color: var(--text-light); position: relative; overflow: hidden;
+            background: linear-gradient(225deg, var(--bg-dark) 0%, var(--primary-accent) 50%, var(--secondary-accent) 100%);
+            background-size: 250% 250%;
+            animation: heroGradient 16s ease infinite alternate;
         }
-        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(22, 24, 29, 0.85); z-index: 1; }
-        .hero > * { position: relative; z-index: 2; }
-        .hero h1 { font-size: clamp(2.8em, 7vw, 4.5em); font-weight: 700; margin-bottom: 15px; text-shadow: 0 3px 15px rgba(0,0,0,0.6); line-height: 1.2; }
-        .hero h1 .highlight { color: var(--primary-accent); }
-        .hero p.description { font-size: clamp(1.1em, 2.5vw, 1.3em); max-width: 750px; margin: 0 auto 35px auto; color: var(--text-color); opacity: 0.95; line-height: 1.7; }
-        .feature-highlights { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin: 40px 0; max-width: 900px; }
-        .feature-item { background-color: rgba(42, 46, 55, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); padding: 25px; border-radius: 10px; width: 250px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1); transition: transform 0.3s ease, background-color 0.3s ease; }
-        .feature-item:hover { transform: translateY(-5px); background-color: rgba(42, 46, 55, 0.8); }
-        .feature-item svg { width: 40px; height: 40px; margin-bottom: 15px; fill: var(--primary-accent); }
-        .feature-item h3 { margin: 0 0 8px 0; font-size: 1.15em; color: var(--text-heading-color); font-weight: 600; }
-        .feature-item p { margin: 0; font-size: 0.9em; color: var(--text-muted-color); line-height: 1.5; }
-        .cta-buttons { margin-top: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .cta-button { padding: 14px 35px; border-radius: 8px; font-size: 1.05em; font-weight: 500; text-decoration: none; color: white; border: none; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
-        .cta-button.primary { background-image: linear-gradient(to right, var(--primary-accent) 0%, var(--secondary-accent) 100%); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
-        .cta-button.primary:hover { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); transform: translateY(-2px); }
-        .cta-button.secondary { background-color: transparent; border: 2px solid var(--primary-accent); color: var(--primary-accent); }
-        .cta-button.secondary:hover { background-color: rgba(96, 165, 250, 0.1); color: #8ec3ff; border-color: #8ec3ff; transform: translateY(-2px); }
-        .hero .scroll-down-link { position: absolute; bottom: 30px; left: 50%; color: var(--text-muted-color); text-decoration: none; font-size: 0.9em; display: flex; flex-direction: column; align-items: center; animation: bounce 2s infinite; z-index: 2; }
-        .hero .scroll-down-link span { margin-bottom: 5px; }
-        .hero .scroll-down-link svg { width: 24px; height: 24px; fill: currentColor; }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translate(-50%, 0);} 40% {transform: translate(-50%, -10px);} 60% {transform: translate(-50%, -5px);} }
-
-        .app-wrapper {
-            display: grid; grid-template-columns: var(--sidebar-width) 1fr; grid-template-rows: var(--header-height) 1fr auto;
-            grid-template-areas: "sidebar header" "sidebar main" "sidebar footer"; min-height: 100vh; position: relative;
-            background-color: var(--app-bg-color); background-image: linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%), linear-gradient(225deg, rgba(255,255,255,0.03) 25%, transparent 25%), linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%), linear-gradient(315deg, rgba(255,255,255,0.03) 25%, var(--app-bg-color) 25%);
-            background-size: 20px 20px; background-position: 0 0, 10px 0, 10px -10px, 0px 10px; transition: background-color 0.3s ease;
-        }
-        .header { grid-area: header; background-color: var(--header-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 0 35px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
-        .header .logo-container { display: flex; align-items: center; cursor: pointer; }
-        .header-title { font-size: 1.3em; font-weight: 600; color: var(--text-heading-color); margin-left: 5px; }
-        .header-title .app-name { color: var(--text-muted-color); font-weight: 400; }
-        .search-container { position: relative; width: 40%; max-width: 400px; }
-        .search-container input[type="search"] { width: 100%; padding: 10px 15px 10px 40px; border-radius: 20px; border: 1px solid var(--border-color); background-color: var(--surface-color); color: var(--text-color); font-size: 0.95em; transition: all 0.2s ease; }
-        .search-container input[type="search"]::placeholder { color: var(--text-muted-color); opacity: 0.8; }
-        .search-container input[type="search"]:focus { outline: none; border-color: var(--primary-accent); background-color: var(--surface-highlight); box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2); }
-        .search-container .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted-color); pointer-events: none; }
-        .search-container .ai-indicator { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 0.7em; font-weight: 500; color: var(--primary-accent); background-color: rgba(96, 165, 250, 0.1); padding: 2px 6px; border-radius: 4px; pointer-events: none; }
-        .sidebar { grid-area: sidebar; background-color: var(--sidebar-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 30px 20px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 35px; overflow-y: auto; z-index: 50; transition: background-color 0.3s ease, border-color 0.3s ease; }
-        .sidebar h3 { color: var(--text-muted-color); margin: 0 0 15px 10px; font-weight: 500; font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.8px; }
-        .sidebar nav a { color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 12px; padding: 10px 15px; font-size: 0.98em; border-radius: 6px; transition: background-color 0.2s ease, color 0.2s ease; margin-bottom: 5px; cursor: pointer; }
-        .sidebar nav a:hover { background-color: rgba(255, 255, 255, 0.08); color: var(--text-heading-color); }
-        .sidebar nav a svg { width: 18px; height: 18px; opacity: 0.7; transition: opacity 0.2s ease; fill: currentColor;}
-        .sidebar nav a:hover svg { opacity: 1; }
-        .tips-section { background-color: rgba(0,0,0,0.15); border-radius: 8px; padding: 15px; border: 1px solid var(--border-color); transition: background-color 0.3s ease, border-color 0.3s ease; }
-        .tips-section h3 { margin: 0 0 10px 0; color: var(--text-color); }
-        .tips-section p { color: var(--text-muted-color); font-size: 0.88em; line-height: 1.5; margin-bottom: 8px; }
-        .tips-section p strong { color: var(--primary-accent); font-weight: 500; }
-
-        #view-container { grid-area: main; padding: 40px 50px; overflow-y: auto; max-width: var(--content-max-width); margin: 0 auto; width: 100%; }
-        .view { display: none; animation: fadeIn 0.5s ease-in-out; }
-        .view.active-view { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        #home-view #notes-stats { background-color: var(--surface-color); padding: 25px; border-radius: 12px; margin-bottom: 40px; text-align: center; border: 1px solid var(--border-color); transition: background-color 0.3s ease, border-color 0.3s ease; box-shadow: 0 3px 10px var(--shadow-color-light); }
-        #home-view #notes-stats p { margin: 0; font-size: 1.2em; color: var(--text-muted-color); }
-        #home-view #notes-stats .count { font-weight: 700; font-size: 2.2em; color: var(--secondary-accent); display: block; margin-top: 8px;}
-        #home-view #recent-notes-preview { margin-bottom: 40px; }
-        #home-view #recent-notes-preview h2 { font-size: 1.8em; color: var(--text-heading-color); margin-bottom: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; transition: border-color 0.3s ease; display: flex; align-items: center; gap: 10px; }
-        #home-view #recent-notes-preview h2 svg { width: 24px; height: 24px; fill: var(--primary-accent); }
-        #home-view #recent-notes-preview-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-        #home-view .preview-card { background-color: var(--surface-color); border-radius: 8px; padding: 20px; border: 1px solid var(--border-color); transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease; cursor: pointer; box-shadow: 0 2px 5px var(--shadow-color-light); }
-        #home-view .preview-card:hover { background-color: var(--surface-highlight); border-color: var(--primary-accent); transform: translateY(-3px); box-shadow: 0 4px 10px var(--shadow-color-light); }
-        #home-view .preview-card h4 { margin: 0 0 8px 0; font-size: 1.15em; color: var(--primary-accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600;}
-        #home-view .preview-card p { font-size: 0.95em; color: var(--text-muted-color); margin: 0; max-height: 3.2em; overflow: hidden; line-height: 1.6; }
-
-        #notes-view .form-container h2, #notebooks-view h2 { color: var(--text-heading-color); margin-bottom: 30px; font-size: 1.8em; }
-        #notes-view .form-container h2 .icon, #notebooks-view h2 .icon { color: var(--primary-accent); font-size: 1em; opacity: 1; }
-        #notes-view input[type="text"], #notes-view textarea { width: 100%; box-sizing: border-box; margin-bottom: 20px; padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--surface-highlight); color: var(--text-color); font-family: inherit; font-size: 1em; transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
-        #notes-view input::placeholder, #notes-view textarea::placeholder { color: var(--text-muted-color); }
-        #notes-view input:focus, #notes-view textarea:focus { outline: none; border-color: var(--primary-accent); box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25); background-color: var(--surface-color); }
-        #notes-view textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
-        #notes-view button.submit-btn { padding: 12px 25px; border: none; border-radius: 6px; background-image: linear-gradient(to right, var(--primary-accent) 0%, var(--secondary-accent) 100%); color: white; cursor: pointer; font-size: 1em; font-weight: 500; transition: all 0.3s ease; display: inline-block; width: auto; margin-top: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
-        #notes-view button.submit-btn:hover { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); transform: translateY(-2px); opacity: 0.95; }
-        #notes-view button.submit-btn:active { transform: translateY(0px) scale(0.98); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); }
-        #notes-view .entries-section, #notebooks-view .entries-section { margin-top: 40px; }
-        #notes-view .entries-container h2, #notebooks-view .entries-container h2 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; font-size: 1.8em; color: var(--text-heading-color); }
-        #notes-view .entries-container h2 .icon, #notebooks-view .entries-container h2 .icon { color: var(--secondary-accent); }
-        #notes-view #entry-count, #notebooks-view #notebook-entry-count { font-size: 0.8em; font-weight: 500; color: white; background-image: linear-gradient(to right, var(--primary-accent), var(--secondary-accent)); padding: 4px 10px; border-radius: 12px; margin-left: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        #notes-view #entries-list, #notebooks-view #notebook-entries-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
-        #notes-view .entry-card, #notebooks-view .entry-card { background-color: var(--surface-color); border-radius: 10px; border: 1px solid var(--border-color); box-shadow: 0 5px 15px var(--shadow-color-light); position: relative; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease; }
-        #notes-view .entry-card:hover, #notebooks-view .entry-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px var(--shadow-color-medium); border-color: var(--primary-accent); }
-        #notes-view .entry-card img.entry-image, #notebooks-view .entry-card img.entry-image { width: 100%; height: 180px; object-fit: cover; display: block; border-bottom: 1px solid var(--border-color); transition: border-color 0.3s ease;}
-        #notes-view .card-content, #notebooks-view .card-content { padding: 20px 25px; }
-        #notes-view .entry-card h3, #notebooks-view .entry-card h3 { color: var(--text-heading-color); margin: 0 0 8px 0; font-weight: 600; font-size: 1.25em; line-height: 1.4; }
-        #notes-view .entry-card .content, #notebooks-view .entry-card .content { white-space: pre-wrap; word-wrap: break-word; color: var(--text-color); font-size: 0.95em; line-height: 1.6; margin-bottom: 15px; max-height: 100px; overflow: hidden; position: relative; }
-        #notes-view .entry-card .content::after, #notebooks-view .entry-card .content::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 25px; pointer-events: none; background: linear-gradient(to bottom, transparent, var(--surface-color)); opacity: 1; transition: opacity 0.2s ease, background 0.3s ease; }
-        #notes-view .entry-card:hover .content::after, #notebooks-view .entry-card:hover .content::after { opacity: 0; }
-        #notes-view .entry-card .meta, #notebooks-view .entry-card .meta { font-size: 0.8em; color: var(--text-muted-color); display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px dashed var(--border-color); transition: border-color 0.3s ease; }
-        #notes-view .entry-card .meta strong, #notebooks-view .entry-card .meta strong { color: var(--text-color); font-weight: 500; }
-        #notes-view button.delete-btn, #notebooks-view button.delete-btn { position: absolute; top: 12px; right: 12px; background: rgba(44, 48, 58, 0.7); backdrop-filter: blur(5px); color: var(--text-muted-color); border: 1px solid var(--border-color); border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 1.3em; line-height: 30px; text-align: center; padding: 0; transition: all 0.2s ease; opacity: 0; z-index: 5; }
-        #notes-view .entry-card:hover button.delete-btn, #notebooks-view .entry-card:hover button.delete-btn { opacity: 1; }
-        #notes-view button.delete-btn:hover, #notebooks-view button.delete-btn:hover { background: var(--danger-color); color: white; border-color: transparent; transform: scale(1.1); }
-
-        .footer { grid-area: footer; padding: 20px 50px; text-align: center; font-size: 0.9em; color: var(--text-muted-color); border-top: 1px solid var(--border-color); background-color: var(--sidebar-bg); backdrop-filter: blur(15px); transition: background-color 0.3s ease, border-color 0.3s ease; }
-
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease; }
-        .modal-overlay.active { display: block; opacity: 1; }
-        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--surface-highlight); color: var(--text-color); padding: 30px 40px; border-radius: 10px; z-index: 1001; width: 90%; max-width: 550px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.4); border: 1px solid var(--border-color); transition: background-color 0.3s ease, border-color 0.3s ease; }
-        .modal.active { display: block; animation: fadeInModal 0.3s ease-out; }
-        @keyframes fadeInModal { from { opacity: 0; transform: translate(-50%, -45%); } to { opacity: 1; transform: translate(-50%, -50%); } }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); transition: border-color 0.3s ease; }
-        .modal-header h3 { margin: 0; font-size: 1.4em; color: var(--text-heading-color); }
-        .modal-close-btn { background: none; border: none; font-size: 1.8em; color: var(--text-muted-color); cursor: pointer; padding: 0 5px; line-height: 1; transition: color 0.2s ease; }
-        .modal-close-btn:hover { color: var(--text-color); }
-        .modal-content { max-height: 70vh; overflow-y: auto; padding-right: 10px; }
-        .modal-content p { margin: 0 0 15px 0; color: var(--text-muted-color); line-height: 1.6;}
-        .modal-content strong { color: var(--text-color); font-weight: 500; }
-        .modal-section { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px dashed var(--border-color); transition: border-color 0.3s ease;}
-        .modal-section:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0;}
-        .modal-section h4 { margin: 0 0 12px 0; color: var(--primary-accent); font-weight: 600; font-size: 1.1em; }
-        .theme-toggle label { display: flex; align-items: center; cursor: pointer; user-select: none;}
-        .theme-toggle input { opacity: 0; width: 0; height: 0; }
-        .theme-toggle .slider { width: 50px; height: 26px; background-color: var(--surface-color); border-radius: 13px; position: relative; transition: background-color 0.3s ease; border: 1px solid var(--border-color); }
-        .theme-toggle .slider::before { content: ""; position: absolute; width: 20px; height: 20px; background-color: white; border-radius: 50%; top: 2px; left: 3px; transition: transform 0.3s ease, background-color 0.3s ease; }
-        .theme-toggle input:checked + .slider { background-color: var(--primary-accent); }
-        .theme-toggle input:checked + .slider::before { transform: translateX(24px); }
-        .light-theme .theme-toggle .slider::before { background-color: var(--primary-accent); }
-        .light-theme .theme-toggle input:checked + .slider::before { background-color: white; }
-        .theme-toggle span { margin-left: 10px; }
-        #settings-modal .input-group { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
-        #settings-modal input[type="text"] { flex-grow: 1; margin-bottom: 0; padding: 10px 12px; font-size: 0.95em; background-color: var(--surface-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 4px; transition: background-color 0.3s ease, border-color 0.3s ease; }
-        .light-theme #settings-modal input[type="text"] { background-color: #e9ecef; border-color: #ced4da; color: #495057; }
-        .placeholder-setting { color: var(--text-muted-color); font-style: italic; margin-top: 10px; font-size: 0.9em;}
-        .modal-button { padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.95em; font-weight: 500; transition: all 0.2s ease; margin-right: 10px; margin-top: 5px;}
-        .modal-button.primary { background-color: var(--primary-accent); color: white; }
-        .modal-button.primary:hover { background-color: #7abaff; }
-        .modal-button.danger { background-color: var(--danger-color); color: white; }
-        .modal-button.danger:hover { background-color: #f98e8e; }
-        .modal-button.secondary { background-color: var(--surface-color); color: var(--text-color); border: 1px solid var(--border-color); }
-        .modal-button.secondary:hover { background-color: var(--surface-highlight); }
-        #share-link-input { width: 100%; padding: 8px 10px; margin-bottom: 10px; background-color: var(--surface-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 4px; font-size: 0.9em; transition: background-color 0.3s ease, border-color 0.3s ease; }
-        #copy-status { font-size: 0.85em; color: var(--success-color); margin-left: 10px; opacity: 0; transition: opacity 0.3s ease; }
-        #copy-status.visible { opacity: 1; }
-        #login-button { display: none; }
-        .logged-out #login-button { display: inline-block; }
-        .logged-out #logout-button { display: none; }
-        .logged-out #save-name-button { display: none; }
-
-        .light-theme {
-             --bg-color: #f4f5f7; --app-bg-color: #ffffff; --sidebar-bg: rgba(248, 249, 250, 0.85); --header-bg: rgba(255, 255, 255, 0.8); --surface-color: #f8f9fa; --surface-highlight: #e9ecef; --border-color: #dee2e6; --text-color: #495057; --text-muted-color: #6c757d; --text-heading-color: #212529; --shadow-color-light: rgba(0, 0, 0, 0.08); --shadow-color-medium: rgba(0, 0, 0, 0.15);
-        }
-        .light-theme .app-wrapper { background-image: linear-gradient(135deg, rgba(0,0,0,0.02) 25%, transparent 25%), linear-gradient(225deg, rgba(0,0,0,0.02) 25%, transparent 25%), linear-gradient(45deg, rgba(0,0,0,0.02) 25%, transparent 25%), linear-gradient(315deg, rgba(0,0,0,0.02) 25%, var(--app-bg-color) 25%); }
-        .light-theme .search-container input[type="search"] { background-color: #e9ecef; border-color: #ced4da; color: #495057;}
-        .light-theme .search-container input[type="search"]::placeholder { color: #6c757d; }
-        .light-theme input, .light-theme textarea { background-color: #ffffff; border: 1px solid #ced4da; color: #495057; }
-        .light-theme input::placeholder, .light-theme textarea::placeholder { color: #6c757d; }
-        .light-theme input:focus, .light-theme textarea:focus { background-color: #ffffff; border-color: var(--primary-accent); box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25); }
-        .light-theme .tips-section { background-color: rgba(0,0,0,0.03); border-color: var(--border-color); }
-        .light-theme .tips-section h3 { color: var(--text-heading-color); }
-        .light-theme .entry-card { background-color: #ffffff; border-color: #e9ecef; }
-        .light-theme .entry-card:hover { border-color: var(--primary-accent); }
-        .light-theme .entry-card .content::after { background: linear-gradient(to bottom, transparent, #ffffff); }
-        .light-theme .preview-card { background-color: #ffffff; border-color: #e9ecef; }
-        .light-theme .preview-card:hover { background-color: #f8f9fa; border-color: var(--primary-accent); }
-        .light-theme .modal { background-color: #ffffff; border-color: #dee2e6; color: #212529; }
-        .light-theme .modal-header { border-color: #dee2e6; }
-        .light-theme .modal-close-btn { color: #6c757d; }
-        .light-theme .modal-close-btn:hover { color: #212529; }
-        .light-theme .modal-content p { color: #6c757d; }
-        .light-theme .modal-content strong { color: #212529; }
-        .light-theme .theme-toggle .slider { background-color: #ced4da; border-color: #adb5bd; }
-        .light-theme .theme-toggle .slider::before { background-color: var(--primary-accent); }
-        .light-theme .theme-toggle input:checked + .slider::before { background-color: white; }
-        .light-theme .modal-button.secondary { background-color: #e9ecef; color: #495057; border-color: #ced4da; }
-        .light-theme .modal-button.secondary:hover { background-color: #dee2e6; }
-        .light-theme #share-link-input { background-color: #e9ecef; border-color: #ced4da; color: #495057; }
-        .light-theme #notes-stats { background-color: #ffffff; }
-
-        @media (max-width: 900px) {
-             .app-wrapper { grid-template-columns: 1fr; grid-template-rows: var(--header-height) auto 1fr auto; grid-template-areas: "header" "sidebar" "main" "footer"; }
-             .sidebar { border-right: none; border-bottom: 1px solid var(--border-color); }
-             #view-container { padding: 30px 25px; max-width: none; margin: 0; }
-             .footer { padding: 20px 25px; }
-             .header { padding: 0 25px; }
-             .search-container { width: 50%; }
-             #entries-list, #notebook-entries-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;}
-             #recent-notes-preview-list { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
-        }
-        @media (max-width: 600px) {
-             body { font-size: 14px; }
-             .hero h1 { font-size: 2.2em; } .hero p.description { font-size: 0.95em; }
-             .hero-icons { gap: 20px; } .hero-icons svg { width: 35px; }
-             .feature-highlights { gap: 20px; } .feature-item { width: 100%; max-width: 280px;}
-             .cta-buttons { flex-direction: column; align-items: center; gap: 15px; }
-             .cta-button { width: 80%; text-align: center; padding: 15px 20px;}
-             .app-wrapper { grid-template-rows: 60px auto 1fr auto; }
-             .header { padding: 0 15px; } .header-title { display: none; } .search-container { display: none; }
-             .sidebar { padding: 20px 15px; } #view-container { padding: 25px 15px; }
-             h2, #home-view #recent-notes-preview h2, #notebooks-view h2 { font-size: 1.5em; }
-             #entries-list, #notebook-entries-list { grid-template-columns: 1fr; gap: 15px;}
-             #recent-notes-preview-list { grid-template-columns: 1fr; gap: 15px; }
-             .entry-card img.entry-image { height: 150px; } .card-content { padding: 15px 20px; }
-             .footer { padding: 15px; } #notes-view button.submit-btn { width: 100%; }
-             .modal { width: 95%; padding: 20px; } .modal-header { margin-bottom: 15px; padding-bottom: 10px; }
-             .modal-header h3 { font-size: 1.2em; }
+         .hero-container::before {
+            content: ''; position: absolute; top: 0; left: 0; right:0; bottom: 0;
+            background-color: rgba(10, 9, 26, 0.88); /* Stronger dark overlay */
+            z-index: 1;
+            backdrop-filter: blur(3px);
          }
+         .hero-container > * { position: relative; z-index: 2; }
+        @keyframes heroGradient { 0%{background-position:0% 0%} 50%{background-position:100% 100%} 100%{background-position:0% 0%} }
+
+        .hero-content-wrapper { /* New wrapper to center content */
+             max-width: 950px; z-index: 2;
+             width: 100%;
+             padding: 20px; /* Padding around content */
+             animation: floatUp 1s ease-out 0.2s forwards; opacity: 0;
+        }
+         @keyframes floatUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hero-content-wrapper h1 {
+            font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 800; margin: 0 0 20px 0;
+            line-height: 1.15; letter-spacing: -1.5px; color: #fff;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .hero-content-wrapper .highlight { background: linear-gradient(to right, #fff, var(--secondary-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding: 0 4px; }
+        .hero-content-wrapper p.description { font-size: clamp(1.1rem, 2.5vw, 1.3rem); margin: 0 auto 40px auto; color: var(--text-light); max-width: 700px; opacity: 0.95; }
+        .feature-highlights { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin: 45px 0; width: 100%; }
+        .feature-item {
+            background-color: var(--surface-dark-alpha); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 30px;
+            border-radius: 12px; text-align: left; border: 1px solid var(--border-light);
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0; animation: fadeInItem 0.6s ease-out forwards; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .feature-item:nth-child(1) { animation-delay: 0.4s; }
+        .feature-item:nth-child(2) { animation-delay: 0.6s; }
+        .feature-item:nth-child(3) { animation-delay: 0.8s; }
+        @keyframes fadeInItem { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .feature-item:hover { transform: translateY(-6px); background-color: rgba(40, 40, 70, 0.8); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .feature-item svg { width: 35px; height: 35px; margin-bottom: 15px; fill: var(--primary-accent); filter: drop-shadow(0 0 6px var(--glow-primary));}
+        .feature-item h3 { margin: 0 0 10px 0; font-size: 1.2em; color: #fff; font-weight: 600; }
+        .feature-item p { margin: 0; font-size: 0.95em; color: var(--text-muted); line-height: 1.6; }
+
+        .cta-buttons { margin-top: 35px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .cta-button { padding: 15px 40px; border-radius: 50px; font-size: 1rem; font-weight: 600; text-decoration: none; border: none; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, background-size 0.3s ease; letter-spacing: 0.5px; }
+        .cta-button.primary { background: linear-gradient(90deg, var(--primary-accent) 0%, var(--secondary-accent) 100%); color: white; box-shadow: 0 5px 15px var(--glow-secondary); background-size: 100% 100%; }
+        .cta-button.primary:hover { background-size: 150% 150%; transform: translateY(-3px); box-shadow: 0 8px 20px var(--glow-secondary); }
+        .cta-button.secondary { background-color: transparent; border: 2px solid var(--primary-accent); color: var(--primary-accent); }
+        .cta-button.secondary:hover { background-color: rgba(59, 130, 246, 0.1); color: #8ec3ff; border-color: #8ec3ff; transform: translateY(-3px); box-shadow: 0 0 15px var(--accent-glow); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(17, 17, 31, 0.7); backdrop-filter: blur(8px); z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { display: block; opacity: 1; }
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #1f1f30; color: var(--text-light); padding: 30px 40px; border-radius: 15px; z-index: 1001; width: 90%; max-width: 600px; display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.5); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .modal.active { display: block; animation: fadeInModal 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+        @keyframes fadeInModal { from { opacity: 0; transform: translate(-50%, -45%) scale(0.95); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .modal-header h3 { margin: 0; font-size: 1.5em; color: #fff; font-weight: 600; }
+        .modal-close-btn { background: none; border: none; font-size: 1.8em; color: var(--text-muted); cursor: pointer; padding: 0 5px; line-height: 1; transition: color 0.2s ease, transform 0.2s ease; }
+        .modal-close-btn:hover { color: var(--primary-accent); transform: rotate(90deg); }
+        .modal-content { max-height: 70vh; overflow-y: auto; padding-right: 10px; }
+        .modal-content p { margin: 0 0 15px 0; color: var(--text-muted); line-height: 1.7;}
+        .modal-content strong { color: var(--text-light); font-weight: 600; }
+        .modal-button.secondary { background-color: rgba(255, 255, 255, 0.1); color: var(--text-light); border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s ease; margin-top: 10px;}
+        .modal-button.secondary:hover { background-color: rgba(255, 255, 255, 0.2); }
+
+        @media (max-width: 768px) { .feature-highlights { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto;} .feature-item { width: 100%; } }
+        @media (max-width: 600px) {
+            body { font-size: 15px; } .hero-content { padding: 30px 20px; }
+            .cta-buttons { flex-direction: column; align-items: center; gap: 15px; }
+            .cta-button { width: 90%; text-align: center; padding: 15px 20px;}
+            .modal { padding: 25px 20px;} .modal-header h3 {font-size: 1.3em;}
+        }
     </style>
 </head>
 <body>
-
-<section class="hero" id="entry-point">
-    <h1><span class="highlight">Chronicle</span> Notes</h1>
-    <p class="description">
-        The fluid, intuitive space designed to capture your thoughts, streamline your ideas, and organize life. Secure, accessible, and beautifully simple. Start chronicling your world.
-    </p>
-    <div class="feature-highlights">
-        <div class="feature-item">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.5a.75.75 0 00.5.707A9.735 9.735 0 006 21a9.707 9.707 0 005.25-1.533.75.75 0 00.5-.68V5.213a.75.75 0 00-.5-.68zm3 0A9.707 9.707 0 0018 3a9.735 9.735 0 003.25.555.75.75 0 01.5.707v14.5a.75.75 0 01-.5.707A9.735 9.735 0 0118 21a9.707 9.707 0 01-5.25-1.533.75.75 0 01-.5-.68V5.213a.75.75 0 01.5-.68z"></path></svg>
-            <h3>Organize Effortlessly</h3>
-            <p>Use notebooks and tags (concept) to structure your thoughts.</p>
+<section class="hero-container">
+    <div class="hero-content-wrapper">
+        <h1>Organize Your Thoughts with <span class="highlight">Chronicle Notes</span></h1>
+        <p>
+            The effortless, modern notebook designed for clarity. Capture inspiration, organize projects, and access your thoughts instantly, securely stored right in your browser.
+        </p>
+        <div class="feature-highlights">
+            <div class="feature-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.5a.75.75 0 00.5.707A9.735 9.735 0 006 21a9.707 9.707 0 005.25-1.533.75.75 0 00.5-.68V5.213a.75.75 0 00-.5-.68zm3 0A9.707 9.707 0 0018 3a9.735 9.735 0 003.25.555.75.75 0 01.5.707v14.5a.75.75 0 01-.5.707A9.735 9.735 0 0118 21a9.707 9.707 0 01-5.25-1.533.75.75 0 01-.5-.68V5.213a.75.75 0 01.5-.68z"></path></svg>
+                <h3>Fluid Organization</h3>
+                <p>Structure your thoughts with flexible notebooks & tags (coming soon).</p>
+            </div>
+            <div class="feature-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M15.594 3.917a.75.75 0 01.992 0l4.5 4.5a.75.75 0 010 .992l-4.5 4.5a.75.75 0 01-.992-.992l3.258-3.258H4.5a.75.75 0 010-1.5h14.354L15.594 4.91a.75.75 0 010-.992zm-7.088 15.166a.75.75 0 01-.992 0l-4.5-4.5a.75.75 0 010-.992l4.5-4.5a.75.75 0 01.992.992L6.146 12.75H19.5a.75.75 0 010 1.5H6.146l3.36 3.36a.75.75 0 010 .992z" clip-rule="evenodd" /></svg>
+                <h3>Modern Interface</h3>
+                <p>Engage with a visually dynamic and responsive design.</p>
+            </div>
+            <div class="feature-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"></path></svg>
+                <h3>Secure & Local</h3>
+                <p>Your data remains private, stored directly in your browser.</p>
+            </div>
         </div>
-        <div class="feature-item">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M1.5 7.125c0-1.036.84-1.875 1.875-1.875h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 16.875v-9.75zm19.5.375H3a.375.375 0 00-.375.375v9.75c0 .207.168.375.375.375h17.25a.375.375 0 00.375-.375v-9.75a.375.375 0 00-.375-.375zM4.5 12a.75.75 0 01.75-.75h13.5a.75.75 0 010 1.5H5.25a.75.75 0 01-.75-.75z" clip-rule="evenodd"></path><path d="M3.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H3.75z"></path></svg>
-            <h3>Simple Interface</h3>
-            <p>Focus on your notes with a clean, intuitive, and fast design.</p>
-        </div>
-        <div class="feature-item">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"></path></svg>
-            <h3>Secure & Private</h3>
-            <p>Your notes stay locally on your browser, giving you control.</p>
+        <div class="cta-buttons">
+            <a href="app.html" class="cta-button primary">Launch App</a>
+            <button id="hero-learn-more-btn" class="cta-button secondary">About Creator</button>
         </div>
     </div>
-    <div class="cta-buttons">
-        <button id="hero-go-to-notes-btn" class="cta-button primary">Open Chronicle Notes</button>
-        <button id="hero-learn-more-btn" class="cta-button secondary">About the Creator</button>
-    </div>
-    <a href="#app-start" class="scroll-down-link">
-        <span>Scroll Down</span>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-    </a>
 </section>
 
-<div class="app-wrapper" id="app-start">
-    <header class="header">
-        <div class="logo-container" id="home-link">
-            <div class="header-title"><span class="app-name">Chronicle</span> Notes</div>
-        </div>
-        <div class="search-container">
-                 <span class="search-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="currentColor" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
-                 </span>
-            <input type="search" id="search-box" placeholder="Search notes...">
-            <span class="ai-indicator">AI ✨</span>
-        </div>
-        <div></div>
-    </header>
-
-    <aside class="sidebar">
-        <nav>
-            <h3>Workspace</h3>
-            <a id="nav-dashboard"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v1a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 3a1 1 0 011-1h10a1 1 0 011 1v1a1 1 0 01-1 1H6a1 1 0 01-1-1V7zm2 3.5a.5.5 0 01.5-.5h6a.5.5 0 010 1h-6a.5.5 0 01-.5-.5zM3 14a1 1 0 011-1h12a1 1 0 011 1v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-1z" clip-rule="evenodd"></path></svg> Dashboard</a>
-            <a id="nav-all-notes"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H5a1 1 0 110-2V4zm3 1a1 1 0 011-1h2a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg> All Notes</a>
-            <a id="nav-notebooks"><svg viewBox="0 0 20 20"><path d="M5.5 16.5A1.5 1.5 0 014 15V5a1.5 1.5 0 011.5-1.5h9A1.5 1.5 0 0116 5v10a1.5 1.5 0 01-1.5 1.5h-9zM5 5a.5.5 0 00-.5.5v10a.5.5 0 00.5.5h9a.5.5 0 00.5-.5V5a.5.5 0 00-.5-.5h-9z"></path><path d="M5.5 1a1 1 0 00-1 1v.5a.5.5 0 001 0V2h9v-.5a.5.5 0 001 0v-.5a1 1 0 00-1-1h-9z"></path></svg> Notebooks</a>
-            <a id="nav-tags"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a1 1 0 011-1h14a1 1 0 011 1v4.293zM16 5H4v5l7 7 7-7V5z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M6 7a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"></path></svg> Tags</a>
-        </nav>
-        <nav>
-            <h3>Tools & Extras</h3>
-            <a id="nav-drawing"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M15.293 3.293a1 1 0 011.414 0l1 1a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.248-1.248l1-3a1 1 0 01.242-.39l9-9zM14 6l-8.5 8.5-1-1L13 5l1 1zm2-2l-1 1-1-1 1-1 1 1z" clip-rule="evenodd"></path></svg> Drawing Canvas</a>
-            <a id="nav-collaborate"><svg viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg> Collaborate</a>
-        </nav>
-        <nav>
-            <h3>Account</h3>
-            <a id="nav-settings"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.566.379-1.566 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.566 2.6 1.566 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.566-.379 1.566-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106A1.532 1.532 0 0111.49 3.17zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg> Settings</a>
-        </nav>
-        <div class="tips-section">
-            <h3>🚀 Quick Tips</h3>
-            <p><strong>Markdown:</strong> Use *italic*, **bold**, and `code`!</p>
-            <p><strong>Images:</strong> Add flair with cover image URLs.</p>
-            <p><strong>Search:</strong> Find notes instantly (AI soon!).</p>
-        </div>
-    </aside>
-
-    <main id="view-container">
-        <div id="home-view" class="view">
-            <section id="notes-stats">
-                <p>Total Notes Saved: <span class="count" id="stats-total-notes">0</span></p>
-            </section>
-            <section id="recent-notes-preview">
-                <h2>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.25 3A2.25 2.25 0 003 5.25v9.5A2.25 2.25 0 005.25 17h9.5A2.25 2.25 0 0017 14.75v-9.5A2.25 2.25 0 0014.75 3H5.25zM9.5 6a.5.5 0 01.5.5v2a.5.5 0 01-1 0V6.5a.5.5 0 01.5-.5zm-.5 4.5a.5.5 0 000 1h1a.5.5 0 000-1h-1zM5 6.25A1.25 1.25 0 107.5 7.5 1.25 1.25 0 005 6.25zm1.75-.5a.25.25 0 01.25.25V7a.25.25 0 01-.5 0V6a.25.25 0 01.25-.25zM10.25 6a.25.25 0 00-.25.25V7a.25.25 0 00.5 0V6.25a.25.25 0 00-.25-.25zm.75 3.5A1.25 1.25 0 1012.5 11 1.25 1.25 0 0011 9.75zm1.75-.5a.25.25 0 01.25.25v.5a.25.25 0 01-.5 0v-.5a.25.25 0 01.25-.25zm-3.5 1.75a.25.25 0 00-.25.25v.5a.25.25 0 00.5 0v-.5a.25.25 0 00-.25-.25z" clip-rule="evenodd" /></svg>
-                    Recent Notes
-                </h2>
-                <ul id="recent-notes-preview-list">
-                    <p style="color: var(--text-muted-color);">No recent notes to show.</p>
-                </ul>
-            </section>
-        </div>
-
-        <div id="notes-view" class="view">
-            <section class="form-section">
-                <div class="form-container">
-                    <h2><span class="icon">✍️</span> Create or Edit Note</h2>
-                    <form id="journal-form">
-                        <input type="text" id="name" placeholder="Author Name" required>
-                        <input type="text" id="title" placeholder="Note Title" required>
-                        <textarea id="content" placeholder="Start writing..." required></textarea>
-                        <input type="text" id="imageUrl" placeholder="Optional Cover Image URL (e.g., https://...)">
-                        <button type="submit" class="submit-btn">Save Note</button>
-                    </form>
-                </div>
-            </section>
-            <section class="entries-section">
-                <div class="entries-container">
-                    <h2><span class="icon">📚</span> All Your Notes <span id="entry-count"></span></h2>
-                    <ul id="entries-list"></ul>
-                </div>
-            </section>
-        </div>
-
-        <div id="notebooks-view" class="view">
-            <section class="entries-section">
-                <div class="entries-container">
-                    <h2><span class="icon">📖</span> Notebooks (All Notes) <span id="notebook-entry-count"></span></h2>
-                    <p style="color: var(--text-muted-color); font-size: 0.9em; margin-top: -20px; margin-bottom: 30px;">Note: Category filtering coming soon!</p>
-                    <ul id="notebook-entries-list"></ul>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <footer class="footer">
-        &copy; <span id="current-year"></span> Chronicle Notes - Capture Your World.
-    </footer>
-</div>
-
 <div class="modal-overlay" id="modal-overlay"></div>
-
-<div id="settings-modal" class="modal">
-    <div class="modal-header">
-        <h3>Settings</h3>
-        <button class="modal-close-btn" data-target="settings-modal">&times;</button>
-    </div>
-    <div class="modal-content">
-        <div class="modal-section">
-            <h4>Appearance</h4>
-            <div class="theme-toggle">
-                <label>
-                    <input type="checkbox" id="theme-switch">
-                    <span class="slider"></span>
-                    <span id="theme-label">Dark Mode</span>
-                </label>
-            </div>
-        </div>
-        <div class="modal-section">
-            <h4>Profile</h4>
-            <label for="setting-change-name-input" style="display:block; margin-bottom: 5px; font-size: 0.9em; color: var(--text-muted-color);">Your Name:</label>
-            <div class="input-group">
-                <input type="text" id="setting-change-name-input" placeholder="Enter your name">
-                <button class="modal-button primary" id="save-name-button">Save Name</button>
-            </div>
-        </div>
-        <div class="modal-section">
-            <h4>Notifications</h4>
-            <p class="placeholder-setting">Notification preferences (coming soon).</p>
-        </div>
-        <div class="modal-section">
-            <h4>Data Management</h4>
-            <p class="placeholder-setting">Export notes or import data (planned feature).</p>
-            <button class="modal-button secondary">Export Data (N/A)</button>
-        </div>
-        <div class="modal-section">
-            <h4>Account Actions</h4>
-            <button class="modal-button danger" id="logout-button">Logout & Clear Data</button>
-            <button class="modal-button primary" id="login-button">Login (Simulated)</button>
-            <p class="placeholder-setting" style="margin-top: 10px;">Delete account option (coming soon).</p>
-        </div>
-    </div>
-</div>
-
-<div id="share-modal" class="modal">
-    <div class="modal-header">
-        <h3>Share Note (Simulated)</h3>
-        <button class="modal-close-btn" data-target="share-modal">&times;</button>
-    </div>
-    <div class="modal-content">
-        <p>Share this unique (dummy) link:</p>
-        <input type="text" id="share-link-input" value="https://chronicle.notes/share/aBcDeFgHiJkL" readonly>
-        <button class="modal-button primary" id="copy-link-button">Copy Link</button>
-        <span id="copy-status">Copied!</span>
-        <p style="margin-top: 15px; font-size: 0.9em;">Note: True collaboration requires backend integration.</p>
-    </div>
-</div>
-
-<div id="drawing-modal" class="modal">
-    <div class="modal-header">
-        <h3>Drawing Canvas</h3>
-        <button class="modal-close-btn" data-target="drawing-modal">&times;</button>
-    </div>
-    <div class="modal-content">
-        <p>A drawing canvas feature is planned!</p>
-        <button class="modal-button secondary close-modal-btn" data-target="drawing-modal">OK</button>
-    </div>
-</div>
-
 <div id="about-modal" class="modal">
     <div class="modal-header">
         <h3>About the Creator</h3>
@@ -442,343 +151,27 @@
     </div>
 </div>
 
-<div id="logout-confirm-modal" class="modal">
-    <div class="modal-header">
-        <h3>Confirm Logout</h3>
-        <button class="modal-close-btn" data-target="logout-confirm-modal">&times;</button>
-    </div>
-    <div class="modal-content">
-        <p>This will permanently delete all notes and your saved name stored in this browser. Are you sure?</p>
-        <button class="modal-button danger" id="confirm-logout-button">Yes, Logout & Delete Data</button>
-        <button class="modal-button secondary close-modal-btn" data-target="logout-confirm-modal">Cancel</button>
-    </div>
-</div>
-
 <script>
-    const journalForm = document.getElementById('journal-form');
-    const nameInput = document.getElementById('name');
-    const titleInput = document.getElementById('title');
-    const contentInput = document.getElementById('content');
-    const imageUrlInput = document.getElementById('imageUrl');
-    const entriesList = document.getElementById('entries-list');
-    const entryCountSpan = document.getElementById('entry-count');
-    const currentYearSpan = document.getElementById('current-year');
-    const recentNotesList = document.getElementById('recent-notes-preview-list');
-    const notebookEntriesList = document.getElementById('notebook-entries-list');
-    const notebookEntryCountSpan = document.getElementById('notebook-entry-count');
-    const statsTotalNotes = document.getElementById('stats-total-notes');
-    const appWrapper = document.querySelector('.app-wrapper');
-    const homeLink = document.getElementById('home-link');
-    const navDashboardLink = document.getElementById('nav-dashboard');
-    const navAllNotesLink = document.getElementById('nav-all-notes');
-    const navNotebooksLink = document.getElementById('nav-notebooks');
-    const navSettingsLink = document.getElementById('nav-settings');
-    const navCollaborateLink = document.getElementById('nav-collaborate');
-    const navDrawingLink = document.getElementById('nav-drawing');
-    const heroGoToNotesBtn = document.getElementById('hero-go-to-notes-btn');
-    const heroLearnMoreBtn = document.getElementById('hero-learn-more-btn');
-    const views = document.querySelectorAll('.view');
-    const storageKey = 'chronicleNotesEntries_multiViewV2';
-    const themeStorageKey = 'chronicleNotesThemeV2';
-    const userNameKey = 'chronicleNotesUserNameV2';
-    const modalOverlay = document.getElementById('modal-overlay');
-    const themeSwitch = document.getElementById('theme-switch');
-    const themeLabel = document.getElementById('theme-label');
-    const logoutButton = document.getElementById('logout-button');
-    const loginButton = document.getElementById('login-button');
-    const confirmLogoutButton = document.getElementById('confirm-logout-button');
-    const shareLinkInput = document.getElementById('share-link-input');
-    const copyLinkButton = document.getElementById('copy-link-button');
-    const copyStatus = document.getElementById('copy-status');
-    const settingsModal = document.getElementById('settings-modal');
-    const changeNameInput = document.getElementById('setting-change-name-input');
-    const saveNameButton = document.getElementById('save-name-button');
-
     document.addEventListener('DOMContentLoaded', () => {
-         currentYearSpan.textContent = new Date().getFullYear();
-         loadUserPreferences();
-         loadAllData();
-         setupNavigationAndModals();
-         checkLoginState();
+        const aboutModalButton = document.getElementById('hero-learn-more-btn');
+        const aboutModal = document.getElementById('about-modal');
+        const overlay = document.getElementById('modal-overlay');
+        const closeButtons = document.querySelectorAll('.modal-close-btn, .close-modal-btn');
+
+        const openModal = (modal) => {
+            if(modal && overlay){ modal.classList.add('active'); overlay.classList.add('active'); }
+        }
+        const closeModal = () => {
+             document.querySelectorAll('.modal.active').forEach(modal => modal.classList.remove('active'));
+             if(overlay) overlay.classList.remove('active');
+        }
+
+        if(aboutModalButton && aboutModal){
+            aboutModalButton.addEventListener('click', (e) => { e.preventDefault(); openModal(aboutModal); });
+        }
+        if(overlay) overlay.addEventListener('click', closeModal);
+        closeButtons.forEach(btn => btn.addEventListener('click', closeModal));
     });
-
-    function showView(viewIdToShow) {
-        views.forEach(view => view.classList.remove('active-view'));
-        const targetView = document.getElementById(viewIdToShow);
-        if(targetView) {
-            targetView.classList.add('active-view');
-        }
-
-        const appStartElement = document.getElementById('app-start');
-        if (appStartElement && viewIdToShow !== 'initial') {
-            appStartElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else if (viewIdToShow === 'initial') {
-             window.scrollTo(0, 0);
-        }
-
-
-         if(viewIdToShow === 'notebooks-view') {
-            renderNotebookView();
-         }
-    }
-
-    function openModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if(modal && modalOverlay) {
-             modal.classList.add('active');
-             modalOverlay.classList.add('active');
-        }
-         if(modalId === 'settings-modal') {
-             const currentName = localStorage.getItem(userNameKey) || '';
-             if(changeNameInput) changeNameInput.value = currentName;
-             checkLoginState();
-         }
-    }
-
-    function closeModal() {
-         document.querySelectorAll('.modal.active').forEach(modal => {
-             modal.classList.remove('active');
-         });
-         if(modalOverlay) modalOverlay.classList.remove('active');
-    }
-
-    function setupNavigationAndModals() {
-        homeLink?.addEventListener('click', (e) => { e.preventDefault(); showView('home-view'); });
-        navDashboardLink?.addEventListener('click', (e) => { e.preventDefault(); showView('home-view'); });
-        navAllNotesLink?.addEventListener('click', (e) => { e.preventDefault(); showView('notes-view'); });
-        navNotebooksLink?.addEventListener('click', (e) => {e.preventDefault(); showView('notebooks-view'); });
-        navSettingsLink?.addEventListener('click', (e) => { e.preventDefault(); openModal('settings-modal'); });
-        navCollaborateLink?.addEventListener('click', (e) => { e.preventDefault(); openModal('share-modal'); });
-        navDrawingLink?.addEventListener('click', (e) => { e.preventDefault(); openModal('drawing-modal'); });
-        heroGoToNotesBtn?.addEventListener('click', (e) => { e.preventDefault(); showView('notes-view'); });
-        heroLearnMoreBtn?.addEventListener('click', (e) => { e.preventDefault(); openModal('about-modal'); });
-
-        modalOverlay?.addEventListener('click', closeModal);
-        document.querySelectorAll('.modal-close-btn, .close-modal-btn').forEach(btn => {
-             btn.addEventListener('click', closeModal);
-        });
-
-        themeSwitch?.addEventListener('change', toggleTheme);
-        logoutButton?.addEventListener('click', () => { closeModal(); openModal('logout-confirm-modal'); });
-        loginButton?.addEventListener('click', handleLogin);
-        confirmLogoutButton?.addEventListener('click', handleLogout);
-        copyLinkButton?.addEventListener('click', handleCopyLink);
-        saveNameButton?.addEventListener('click', handleSaveName);
-
-        document.querySelector('.scroll-down-link')?.addEventListener('click', (e) => {
-             e.preventDefault();
-             showView('home-view');
-        });
-    }
-
-     function loadUserPreferences(){
-         applySavedTheme();
-         const savedName = localStorage.getItem(userNameKey) || '';
-         if(nameInput) nameInput.value = savedName;
-     }
-
-    function checkLoginState() {
-        const savedName = localStorage.getItem(userNameKey);
-        const settingsModalContent = settingsModal?.querySelector('.modal-content');
-        if (!settingsModalContent) return;
-
-        if (savedName) {
-             settingsModalContent.classList.remove('logged-out');
-        } else {
-             settingsModalContent.classList.add('logged-out');
-        }
-    }
-
-
-    function applySavedTheme() {
-        const savedTheme = localStorage.getItem(themeStorageKey);
-        if (savedTheme === 'light') {
-            appWrapper.classList.add('light-theme');
-             if(themeSwitch) themeSwitch.checked = true;
-             if(themeLabel) themeLabel.textContent = 'Light Mode';
-        } else {
-            appWrapper.classList.remove('light-theme');
-             if(themeSwitch) themeSwitch.checked = false;
-             if(themeLabel) themeLabel.textContent = 'Dark Mode';
-        }
-    }
-
-    function toggleTheme() {
-        const isLight = appWrapper.classList.toggle('light-theme');
-        localStorage.setItem(themeStorageKey, isLight ? 'light' : 'dark');
-        if(themeLabel) themeLabel.textContent = isLight ? 'Light Mode' : 'Dark Mode';
-    }
-
-     function handleSaveName() {
-         const newName = changeNameInput?.value.trim();
-         if(newName) {
-             localStorage.setItem(userNameKey, newName);
-             if(nameInput) nameInput.value = newName;
-             alert('Name saved successfully!');
-             closeModal();
-         } else {
-             localStorage.removeItem(userNameKey);
-              if(nameInput) nameInput.value = '';
-             alert('Name cleared. Enter a name to save.');
-         }
-         checkLoginState();
-     }
-
-      function handleLogin() {
-          const defaultName = 'Chronicle User';
-          localStorage.setItem(userNameKey, defaultName);
-          if(nameInput) nameInput.value = defaultName;
-          if(changeNameInput) changeNameInput.value = defaultName;
-          checkLoginState();
-          closeModal();
-          alert('Welcome back! Your name is set to "Chronicle User". You can change it in Settings.');
-      }
-
-    function handleLogout() {
-         localStorage.removeItem(storageKey);
-         localStorage.removeItem(userNameKey);
-         closeModal();
-         loadAllData();
-         if(nameInput) nameInput.value = '';
-         showView('home-view');
-         checkLoginState();
-         alert("You have been logged out and local data cleared.");
-    }
-
-    function handleCopyLink() {
-        if(shareLinkInput && navigator.clipboard) {
-            navigator.clipboard.writeText(shareLinkInput.value).then(() => {
-                 copyStatus.classList.add('visible'); setTimeout(() => { copyStatus.classList.remove('visible'); }, 2000);
-            }).catch(err => { console.error('Failed to copy text: ', err); alert("Failed to copy link."); });
-        } else if (shareLinkInput) {
-            shareLinkInput.select();
-             try { document.execCommand('copy'); copyStatus.classList.add('visible'); setTimeout(() => { copyStatus.classList.remove('visible'); }, 2000); }
-             catch (err) { alert("Failed to copy link."); }
-        } else { alert("Clipboard access not available."); }
-    }
-
-    function getEntries() {
-        return JSON.parse(localStorage.getItem(storageKey)) || [];
-    }
-    function saveEntries(entries) {
-        localStorage.setItem(storageKey, JSON.stringify(entries));
-    }
-
-    function loadAllData() {
-        const entries = getEntries();
-        renderEntries(entries, entriesList, entryCountSpan);
-        renderRecentNotesPreview(entries);
-        updateStats(entries);
-        renderNotebookView();
-    }
-
-    function renderEntries(entries, targetList, targetCountSpan) {
-        if(!targetList || !targetCountSpan) return;
-        targetList.innerHTML = '';
-        const sortedEntries = [...entries].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-        if (sortedEntries.length > 0) {
-             targetCountSpan.textContent = `(${sortedEntries.length})`;
-        } else {
-             targetCountSpan.textContent = '(0)';
-             targetList.innerHTML = '<p style="text-align: center; color: var(--text-muted-color); padding: 40px 0;">No notes yet. Create one!</p>';
-             return;
-        }
-
-        sortedEntries.forEach(entry => {
-            const listItem = document.createElement('li');
-            listItem.classList.add('entry-card');
-            listItem.dataset.id = entry.id;
-            const entryDate = new Date(entry.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric'});
-            let imageHtml = '';
-            if (entry.imageUrl && (entry.imageUrl.startsWith('http://') || entry.imageUrl.startsWith('https://'))) {
-                 imageHtml = `<img src="${entry.imageUrl}" alt="Cover Image" class="entry-image" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('no-image');">`;
-            } else { listItem.classList.add('no-image'); }
-            listItem.innerHTML = `
-                ${imageHtml}
-                <div class="card-content">
-                    <h3>${escapeHtml(entry.title)}</h3>
-                    <p class="content">${escapeHtml(entry.content)}</p>
-                    <div class="meta">
-                         <span>By: <strong>${escapeHtml(entry.name)}</strong></span>
-                         <span>${entryDate}</span>
-                    </div>
-                </div>
-                <button class="delete-btn" title="Delete Note">&times;</button>
-            `;
-            targetList.appendChild(listItem);
-        });
-    }
-
-     function renderNotebookView() {
-         const entries = getEntries();
-         renderEntries(entries, notebookEntriesList, notebookEntryCountSpan);
-     }
-
-    function renderRecentNotesPreview(entries) {
-        recentNotesList.innerHTML = '';
-        const recentEntries = [...entries].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 3);
-        if(recentEntries.length === 0) { recentNotesList.innerHTML = '<p style="color: var(--text-muted-color);">No recent notes to show.</p>'; return; }
-        recentEntries.forEach(entry => {
-             const listItem = document.createElement('li');
-             listItem.classList.add('preview-card'); listItem.dataset.id = entry.id;
-             listItem.innerHTML = `<h4>${escapeHtml(entry.title)}</h4><p>${escapeHtml(entry.content.substring(0, 100))}${entry.content.length > 100 ? '...' : ''}</p>`;
-             listItem.addEventListener('click', () => showView('notes-view'));
-             recentNotesList.appendChild(listItem);
-        });
-    }
-
-    function updateStats(entries) {
-        statsTotalNotes.textContent = entries.length;
-    }
-
-    function addEntry(event) {
-        event.preventDefault();
-        const currentName = localStorage.getItem(userNameKey) || '';
-        const inputName = nameInput.value.trim();
-        const title = titleInput.value.trim();
-        const content = contentInput.value.trim();
-        const imageUrl = imageUrlInput.value.trim();
-        const authorNameToSave = inputName || currentName || '';
-
-        if (!authorNameToSave) { alert('Please set an Author Name first (in Settings or the input field).'); return; }
-        if (!title || !content) { alert('Please fill in Note Title and Content.'); return; }
-
-        const newEntry = { id: Date.now(), name: authorNameToSave, title, content, imageUrl, timestamp: new Date().toISOString() };
-        const entries = getEntries();
-        entries.unshift(newEntry); saveEntries(entries);
-        loadAllData();
-        titleInput.value = ''; contentInput.value = ''; imageUrlInput.value = '';
-        if(nameInput) nameInput.value = authorNameToSave;
-        showView('notes-view');
-    }
-
-    function handleEntryActions(event) {
-         const targetList = event.currentTarget;
-         if (event.target.classList.contains('delete-btn')) {
-            const entryCard = event.target.closest('.entry-card');
-            if (entryCard?.dataset.id) { const entryId = Number(entryCard.dataset.id); deleteEntry(entryId); }
-         }
-    }
-
-    function deleteEntry(idToDelete) {
-        if (!confirm('Are you sure you want to permanently delete this note?')) return;
-        let entries = getEntries(); entries = entries.filter(entry => entry.id !== idToDelete);
-        saveEntries(entries);
-        const currentViewId = document.querySelector('.view.active-view')?.id || 'home-view';
-        loadAllData();
-        showView(currentViewId);
-    }
-
-    function escapeHtml(unsafe) {
-        if (typeof unsafe !== 'string') return unsafe;
-        return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
-
-    journalForm.addEventListener('submit', addEntry);
-    entriesList.addEventListener('click', handleEntryActions);
-    if(notebookEntriesList) notebookEntriesList.addEventListener('click', handleEntryActions);
-
 </script>
 
 </body>
