@@ -9,26 +9,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-        /* B&W Theme (Default) */
-        --bg-color-light: #ffffff; --app-bg-color-light: #f9fafb;
+        --bg-color-light: #f9fafb; --app-bg-color-light: #ffffff;
         --header-bg-light: rgba(255, 255, 255, 0.95); --surface-color-light: #ffffff;
         --surface-highlight-light: #f3f4f6; --border-color-light: #e5e7eb;
         --text-color-light: #374151; --text-muted-color-light: #6b7280;
-        --text-heading-color-light: #111827; --primary-accent-light: #1f2937; /* Dark text as accent */
+        --text-heading-color-light: #111827; --primary-accent-light: #1f2937;
         --secondary-accent-light: #ef4444; --danger-color-light: #dc2626;
         --success-color-light: #16a34a; --shadow-color-light: rgba(100, 116, 139, 0.1);
 
-        /* Dark Theme */
         --bg-color-dark: #111827; --app-bg-color-dark: #1f2937;
-        --header-bg-dark: rgba(31, 41, 55, 0.9); --surface-color-dark: #1f2937;
+        --header-bg-dark: rgba(31, 41, 55, 0.95); --surface-color-dark: #1f2937;
         --surface-highlight-dark: #374151; --border-color-dark: #4b5563;
         --text-color-dark: #d1d5db; --text-muted-color-dark: #9ca3af;
-        --text-heading-color-dark: #f9fafb; --primary-accent-dark: #a5b4fc; /* Lighter Indigo */
-        --secondary-accent-dark: #fda4af; /* Lighter Pink/Red */
-        --danger-color-dark: #f87171; --success-color-dark: #34d399;
-        --shadow-color-dark: rgba(0, 0, 0, 0.25);
+        --text-heading-color-dark: #f9fafb; --primary-accent-dark: #a5b4fc;
+        --secondary-accent-dark: #fda4af; --danger-color-dark: #f87171;
+        --success-color-dark: #34d399; --shadow-color-dark: rgba(0, 0, 0, 0.25);
 
-        /* Default to Light/B&W Variables */
         --bg-color: var(--bg-color-light); --app-bg-color: var(--app-bg-color-light);
         --header-bg: var(--header-bg-light); --surface-color: var(--surface-color-light);
         --surface-highlight: var(--surface-highlight-light); --border-color: var(--border-color-light);
@@ -38,7 +34,8 @@
         --success-color: var(--success-color-light); --shadow-color: var(--shadow-color-light);
 
         --main-font: 'Inter', sans-serif; --heading-font: 'Inter', sans-serif;
-        --header-height: 65px; --content-max-width: 1100px;
+        --header-height: 60px; --content-max-width: 1100px;
+        --card-radius: 10px; --button-radius: 8px;
     }
     .dark-theme {
          --bg-color: var(--bg-color-dark); --app-bg-color: var(--app-bg-color-dark);
@@ -53,7 +50,7 @@
     html { scroll-behavior: smooth; }
     body {
         background-color: var(--bg-color); font-family: var(--main-font); color: var(--text-color);
-        margin: 0; font-size: 15px; line-height: 1.6; overflow-x: hidden;
+        margin: 0; font-size: 15.5px; line-height: 1.65; overflow-x: hidden;
          transition: background-color 0.3s ease, color 0.3s ease;
     }
     ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -68,16 +65,15 @@
         border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
         height: var(--header-height); transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-    .header-left { display: flex; align-items: center; gap: 25px; }
+    .header-left { display: flex; align-items: center; gap: 20px; }
     .header-logo { display: flex; align-items: center; cursor: pointer; text-decoration: none;}
-    .header-title { font-size: 1.25em; font-weight: 600; color: var(--text-heading-color); }
-    .header-title .app-name { color: var(--text-heading-color); font-weight: 700;} /* Chronicle White/Black */
-    .header-title .app-name + span { color: var(--text-muted-color); font-weight: 500; } /* Notes Muted */
-    .header-nav { display: none; gap: 5px; }
-    @media (min-width: 768px) { .header-nav { display: flex; } }
+    .header-title { font-size: 1.25em; font-weight: 600; color: var(--text-heading-color); } /* Title white/black */
+    .header-title span { font-weight: 600; } /* Ensure both parts match */
+
+    .header-nav { display: flex; gap: 5px; }
     .header-nav a, .header-nav button {
          color: var(--text-muted-color); text-decoration: none; display: flex; align-items: center; gap: 6px;
-         padding: 8px 12px; font-size: 0.9rem; border-radius: 6px;
+         padding: 8px 12px; font-size: 0.9rem; border-radius: var(--button-radius);
          transition: background-color 0.2s ease, color 0.2s ease; cursor: pointer; background: none; border: none;
          font-family: var(--main-font); font-weight: 500;
     }
@@ -85,77 +81,86 @@
     .header-nav a svg, .header-nav button svg { width: 16px; height: 16px; opacity: 0.8; }
     .header-nav a.active-nav { color: var(--primary-accent); font-weight: 600; background-color: var(--surface-highlight); }
     .dark-theme .header-nav a.active-nav { color: var(--primary-accent); background-color: var(--surface-highlight);}
-    .header-right { display: flex; align-items: center; gap: 15px; }
-    .search-container { position: relative; width: 240px; }
-    .search-container input[type="search"] { width: 100%; padding: 9px 15px 9px 35px; border-radius: 6px; border: 1px solid var(--border-color); background-color: var(--surface-highlight); color: var(--text-color); font-size: 0.9em; transition: all 0.2s ease; font-family: var(--main-font); }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .search-container { position: relative; width: 220px; }
+    .search-container input[type="search"] { width: 100%; padding: 8px 12px 8px 35px; border-radius: var(--button-radius); border: 1px solid var(--border-color); background-color: var(--surface-highlight); color: var(--text-color); font-size: 0.9em; transition: all 0.2s ease; font-family: var(--main-font); }
     .search-container input[type="search"]::placeholder { color: var(--text-muted-color); opacity: 0.8; }
-    .search-container input[type="search"]:focus { outline: none; border-color: var(--primary-accent); background-color: var(--app-bg-color); box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15); }
+    .search-container input[type="search"]:focus { outline: none; border-color: var(--primary-accent); background-color: var(--app-bg-color); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
     .search-container .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted-color); pointer-events: none; }
     .search-container .search-icon svg { width: 16px; height: 16px;}
     .search-container .ai-indicator { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.75em; font-weight: 500; color: var(--primary-accent); background-color: rgba(79, 70, 229, 0.1); padding: 2px 5px; border-radius: 4px; pointer-events: none; }
     .dark-theme .search-container .ai-indicator { background-color: rgba(99, 102, 241, 0.2); color: var(--primary-accent);}
+    .header-button { background: none; border: none; cursor: pointer; color: var(--text-muted-color); padding: 6px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background-color 0.2s ease, color 0.2s ease;}
+    .header-button:hover { background-color: var(--surface-highlight); color: var(--primary-accent);}
+    .header-button svg { width: 20px; height: 20px;}
 
-    #view-container { flex-grow: 1; padding: 35px 40px; overflow-y: auto; background-color: var(--bg-color); transition: background-color 0.3s ease;}
+    #view-container { flex-grow: 1; padding: 30px 35px; overflow-y: auto; background-color: var(--bg-color); transition: background-color 0.3s ease;}
     .view { display: none; animation: fadeInView 0.4s ease-out; width: 100%; max-width: var(--content-max-width); margin: 0 auto;}
     .view.active-view { display: block; }
     @keyframes fadeInView { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    #home-view h2 { font-size: 1.6em; font-weight: 600; color: var(--text-heading-color); margin-bottom: 20px; padding-bottom: 10px; }
-    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;} /* Two columns */
-    #notes-stats { background-color: var(--surface-color); padding: 25px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color); box-shadow: 0 1px 3px var(--shadow-color); transition: all 0.3s ease; }
+    #home-view h2 { font-size: 1.8em; font-weight: 600; color: var(--text-heading-color); margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); transition: border-color 0.3s ease; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px;}
+    #notes-stats { background-color: var(--surface-color); padding: 25px; border-radius: var(--card-radius); text-align: center; border: 1px solid var(--border-color); box-shadow: 0 2px 5px var(--shadow-color); transition: all 0.3s ease; }
     #notes-stats p { margin: 0 0 5px 0; font-size: 1em; color: var(--text-muted-color); }
-    #notes-stats .count { font-weight: 700; font-size: 2em; color: var(--primary-accent); display: block; }
-    .tips-section { background-color: var(--surface-color); padding: 25px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px var(--shadow-color); transition: all 0.3s ease; }
+    #notes-stats .count { font-weight: 700; font-size: 2.2em; color: var(--primary-accent); display: block; }
+    .tips-section { background-color: var(--surface-color); padding: 25px; border-radius: var(--card-radius); border: 1px solid var(--border-color); box-shadow: 0 2px 5px var(--shadow-color); transition: all 0.3s ease; }
     .tips-section h3 { margin: 0 0 15px 0; color: var(--text-heading-color); font-size: 1.1em; display: flex; align-items: center; gap: 8px; font-weight: 600;}
     .tips-section h3 svg { fill: var(--secondary-accent); width: 20px; height: 20px; }
     .tips-section ul { list-style: none; padding: 0; margin: 0; }
-    .tips-section li { color: var(--text-color); font-size: 0.9em; margin-bottom: 10px; padding-left: 20px; position: relative; line-height: 1.5;}
+    .tips-section li { color: var(--text-color); font-size: 0.9em; margin-bottom: 12px; padding-left: 22px; position: relative; line-height: 1.5;}
     .tips-section li::before { content: '✓'; position: absolute; left: 0; color: var(--success-color); font-weight: 600; top: 1px;}
     .tips-section li strong { color: var(--text-heading-color); font-weight: 500; }
     .tips-section li code { background-color: var(--surface-highlight); padding: 2px 4px; border-radius: 4px; font-size: 0.9em; border: 1px solid var(--border-color);}
 
-    #recent-notes-preview { grid-column: 1 / -1; } /* Span full width */
-    #recent-notes-preview h3 { font-size: 1.5em; font-weight: 600; color: var(--text-heading-color); margin: 30px 0 20px 0; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+    #recent-notes-preview { margin-bottom: 40px; }
+    #recent-notes-preview h3 { font-size: 1.5em; font-weight: 600; color: var(--text-heading-color); margin: 30px 0 20px 0; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); transition: border-color 0.3s ease;}
     #recent-notes-preview-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-    #home-view .preview-card { background-color: var(--surface-color); border-radius: 8px; padding: 18px; border: 1px solid var(--border-color); transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer; box-shadow: 0 1px 2px var(--shadow-color); }
-    #home-view .preview-card:hover { background-color: var(--surface-highlight); border-color: var(--primary-accent); transform: translateY(-2px); box-shadow: 0 3px 8px var(--shadow-color); }
-    #home-view .preview-card h4 { margin: 0 0 8px 0; font-size: 1.05em; color: var(--primary-accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600;}
+    #home-view .preview-card { background-color: var(--surface-color); border-radius: var(--card-radius); padding: 18px; border: 1px solid var(--border-color); transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer; box-shadow: 0 1px 3px var(--shadow-color); }
+    #home-view .preview-card:hover { background-color: var(--surface-highlight); border-color: var(--primary-accent); transform: translateY(-2px); box-shadow: 0 4px 10px var(--shadow-color); }
+    #home-view .preview-card h4 { margin: 0 0 8px 0; font-size: 1.1em; color: var(--primary-accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600;}
     #home-view .preview-card p { font-size: 0.9em; color: var(--text-muted-color); margin: 0; max-height: 3.2em; overflow: hidden; line-height: 1.6; }
 
-    #notes-view .form-container h2, #notebooks-view h2 { font-size: 1.6em; font-weight: 600; color: var(--text-heading-color); margin-bottom: 25px; }
-    #notebooks-view p { text-align: left; color: var(--text-muted-color); margin: -15px 0 30px 0; font-size: 0.9em;}
-    .form-section { margin-bottom: 30px;}
-    .form-container { background-color: var(--surface-color); padding: 25px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px var(--shadow-color); transition: background-color 0.3s ease, border-color 0.3s ease; }
+    #notes-view .form-container-wrapper {
+         max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, margin-bottom 0.5s ease-out; margin-bottom: 0;
+    }
+     #notes-view .form-container-wrapper.form-visible { max-height: 1000px; /* Large enough */ margin-bottom: 30px; }
+
+    #notes-view .form-container h2, #notebooks-view h2 { display: none; } /* Hide redundant title */
+    #notebooks-view p { text-align: left; color: var(--text-muted-color); margin: 0 0 30px 0; font-size: 0.9em;}
+    .form-container { background-color: var(--surface-color); padding: 25px; border-radius: var(--card-radius); border: 1px solid var(--border-color); box-shadow: 0 2px 5px var(--shadow-color); transition: background-color 0.3s ease, border-color 0.3s ease; }
     .form-container label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 0.9em; color: var(--text-muted-color); }
-    #notes-view input[type="text"], #notes-view textarea { width: 100%; box-sizing: border-box; margin-bottom: 15px; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border-color); background-color: var(--app-bg-color); color: var(--text-color); font-family: var(--main-font); font-size: 0.95em; transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease; }
+    #notes-view input[type="text"], #notes-view textarea { width: 100%; box-sizing: border-box; margin-bottom: 15px; padding: 10px 12px; border-radius: var(--button-radius); border: 1px solid var(--border-color); background-color: var(--app-bg-color); color: var(--text-color); font-family: var(--main-font); font-size: 1em; transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease; }
     #notes-view input::placeholder, #notes-view textarea::placeholder { color: var(--text-muted-color); opacity: 0.7;}
     #notes-view input:focus, #notes-view textarea:focus { outline: none; border-color: var(--primary-accent); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); background-color: var(--app-bg-color); }
     #notes-view textarea { resize: vertical; min-height: 150px; line-height: 1.6; }
-    .editor-stats { font-size: 0.8em; color: var(--text-muted-color); text-align: right; margin: -10px 0 15px 0; opacity: 0.8;}
-    #notes-view button.submit-btn { padding: 9px 18px; border: none; border-radius: 6px; background-color: var(--primary-accent); color: white; cursor: pointer; font-size: 0.95em; font-weight: 500; transition: all 0.2s ease; display: inline-block; margin-top: 5px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+    .editor-stats { font-size: 0.8em; color: var(--text-muted-color); text-align: right; margin: -10px 5px 15px 0; opacity: 0.9;}
+    #notes-view button.submit-btn { padding: 9px 18px; border: none; border-radius: var(--button-radius); background-color: var(--primary-accent); color: white; cursor: pointer; font-size: 0.95em; font-weight: 500; transition: all 0.2s ease; display: inline-block; margin-top: 5px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+    .dark-theme #notes-view button.submit-btn { color: var(--text-heading-color); }
     #notes-view button.submit-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
     #notes-view .entries-section, #notebooks-view .entries-section { margin-top: 0; }
-    #notes-view .entries-container h2, #notebooks-view .entries-container h2 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 1.6em; }
+    #notes-view .entries-container h2, #notebooks-view .entries-container h2 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 1.6em; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
     #notes-view #entry-count, #notebooks-view #notebook-entry-count { font-size: 0.8em; font-weight: 500; color: var(--text-muted-color); background-color: var(--surface-highlight); padding: 3px 8px; border-radius: 6px; margin-left: 8px; }
-    #notes-view #entries-list, #notebooks-view #notebook-entries-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-    #notes-view .entry-card, #notebooks-view .entry-card { background-color: var(--surface-color); border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px var(--shadow-color); position: relative; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.3s ease; }
-    #notes-view .entry-card:hover, #notebooks-view .entry-card:hover { transform: translateY(-3px); box-shadow: 0 5px 12px var(--shadow-color); border-color: var(--primary-accent); }
-    #notes-view .entry-card img.entry-image, #notebooks-view .entry-card img.entry-image { width: 100%; height: 150px; object-fit: cover; display: block; border-bottom: 1px solid var(--border-color); border-radius: 8px 8px 0 0; transition: border-color 0.3s ease;}
-    #notes-view .card-content, #notebooks-view .card-content { padding: 15px 20px; }
-    #notes-view .entry-card h3, #notebooks-view .entry-card h3 { font-weight: 600; color: var(--text-heading-color); margin: 0 0 6px 0; font-size: 1.1em; line-height: 1.4; }
-    #notes-view .entry-card .content, #notebooks-view .entry-card .content { color: var(--text-color); font-size: 0.95em; line-height: 1.6; margin-bottom: 12px; max-height: 100px; overflow: hidden; position: relative; }
-    #notes-view .entry-card .content::after, #notebooks-view .entry-card .content::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 20px; pointer-events: none; background: linear-gradient(to bottom, transparent, var(--surface-color)); opacity: 1; transition: opacity 0.2s ease, background 0.3s ease; border-radius: 0 0 8px 8px;}
+    #notes-view #entries-list, #notebooks-view #notebook-entries-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 25px; } /* Adjusted gap */
+    #notes-view .entry-card, #notebooks-view .entry-card { background-color: var(--surface-color); border-radius: var(--card-radius); border: 1px solid var(--border-color); box-shadow: 0 2px 6px var(--shadow-color); position: relative; overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.3s ease; }
+    #notes-view .entry-card:hover, #notebooks-view .entry-card:hover { transform: translateY(-4px); box-shadow: 0 6px 14px var(--shadow-color); border-color: var(--primary-accent); background-color: var(--surface-highlight); }
+    #notes-view .entry-card img.entry-image, #notebooks-view .entry-card img.entry-image { width: 100%; height: 150px; object-fit: cover; display: block; border-bottom: 1px solid var(--border-color); border-radius: var(--card-radius) var(--card-radius) 0 0; transition: border-color 0.3s ease;}
+    #notes-view .card-content, #notebooks-view .card-content { padding: 18px 22px; }
+    #notes-view .entry-card h3, #notebooks-view .entry-card h3 { font-weight: 600; color: var(--text-heading-color); margin: 0 0 8px 0; font-size: 1.1em; line-height: 1.4; }
+    #notes-view .entry-card .content, #notebooks-view .entry-card .content { color: var(--text-color); font-size: 0.95em; line-height: 1.6; margin-bottom: 15px; max-height: 95px; overflow: hidden; position: relative; }
+    #notes-view .entry-card .content::after, #notebooks-view .entry-card .content::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 25px; pointer-events: none; background: linear-gradient(to bottom, transparent, var(--surface-color)); opacity: 1; transition: opacity 0.2s ease, background 0.3s ease; border-radius: 0 0 var(--card-radius) var(--card-radius);}
     #notes-view .entry-card:hover .content::after, #notebooks-view .entry-card:hover .content::after { opacity: 0; }
-    #notes-view .entry-card .meta, #notebooks-view .entry-card .meta { font-size: 0.8em; color: var(--text-muted-color); display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border-color); transition: border-color 0.3s ease;}
+    #notes-view .entry-card .meta, #notebooks-view .entry-card .meta { font-size: 0.85em; color: var(--text-muted-color); display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border-color); transition: border-color 0.3s ease;}
     #notes-view .entry-card .meta strong, #notebooks-view .entry-card .meta strong { color: var(--text-color); font-weight: 500; }
-    #notes-view button.delete-btn, #notebooks-view button.delete-btn { position: absolute; top: 8px; right: 8px; background: var(--surface-highlight); color: var(--text-muted-color); border: 1px solid var(--border-color); border-radius: 50%; width: 26px; height: 26px; cursor: pointer; font-size: 1.1em; line-height: 26px; text-align: center; padding: 0; transition: all 0.2s ease; opacity: 0; z-index: 5; }
+    #notes-view button.delete-btn, #notebooks-view button.delete-btn { position: absolute; top: 10px; right: 10px; background: var(--surface-highlight); color: var(--text-muted-color); border: 1px solid var(--border-color); border-radius: 50%; width: 26px; height: 26px; cursor: pointer; font-size: 1.1em; line-height: 26px; text-align: center; padding: 0; transition: all 0.2s ease; opacity: 0; z-index: 5; }
     #notes-view .entry-card:hover button.delete-btn, #notebooks-view .entry-card:hover button.delete-btn { opacity: 1; }
     #notes-view button.delete-btn:hover, #notebooks-view button.delete-btn:hover { background: var(--danger-color); color: white; border-color: transparent; transform: scale(1.1); }
 
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(17, 24, 39, 0.6); backdrop-filter: blur(4px); z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease; }
     .dark-theme .modal-overlay { background-color: rgba(0, 0, 0, 0.7); }
     .modal-overlay.active { display: block; opacity: 1; }
-    .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--app-bg-color); color: var(--text-color); padding: 25px 30px; border-radius: 10px; z-index: 1001; width: 90%; max-width: 500px; display: none; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); border: 1px solid var(--border-color); transition: background-color 0.3s ease, border-color 0.3s ease; }
+    .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--app-bg-color); color: var(--text-color); padding: 25px 30px; border-radius: var(--card-radius); z-index: 1001; width: 90%; max-width: 500px; display: none; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); border: 1px solid var(--border-color); transition: background-color 0.3s ease, border-color 0.3s ease; }
     .modal.active { display: block; animation: fadeInModal 0.3s ease-out; }
     @keyframes fadeInModal { from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
@@ -181,14 +186,14 @@
     #settings-modal .input-group { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
     #settings-modal input[type="text"] { flex-grow: 1; margin-bottom: 0; padding: 9px 12px; font-size: 0.9em; background-color: var(--app-bg-color); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 6px; font-family: var(--main-font);}
     .placeholder-setting { color: var(--text-muted-color); font-style: italic; margin-top: 10px; font-size: 0.85em; opacity: 0.9;}
-    .modal-button { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9em; font-weight: 500; transition: all 0.2s ease; margin-right: 8px; margin-top: 8px; font-family: var(--main-font); }
+    .modal-button { padding: 8px 16px; border: none; border-radius: var(--button-radius); cursor: pointer; font-size: 0.9em; font-weight: 500; transition: all 0.2s ease; margin-right: 8px; margin-top: 8px; font-family: var(--main-font); }
     .modal-button.primary { background-color: var(--primary-accent); color: white; }
     .modal-button.primary:hover { opacity: 0.9; }
     .modal-button.danger { background-color: var(--danger-color); color: white; }
     .modal-button.danger:hover { opacity: 0.9; }
     .modal-button.secondary { background-color: var(--surface-highlight); color: var(--text-color); border: 1px solid var(--border-color); }
     .modal-button.secondary:hover { background-color: var(--surface-color); }
-    .google-login-button { display: inline-flex; align-items: center; gap: 8px; background-color: #ffffff; color: #333; border: 1px solid #ccc; padding: 8px 16px; font-weight: 500; }
+    .google-login-button { display: inline-flex; align-items: center; gap: 8px; background-color: #ffffff; color: #333; border: 1px solid #ccc; padding: 8px 16px; font-weight: 500; border-radius: var(--button-radius);}
     .google-login-button svg { width: 18px; height: 18px; }
     .google-login-button:hover { background-color: #f8f8f8; }
     .dark-theme .google-login-button { background-color: #4285F4; color: white; border: none;}
@@ -204,33 +209,35 @@
     @media (max-width: 900px) {
          .app-wrapper { grid-template-columns: 1fr; grid-template-rows: var(--header-height) 1fr; grid-template-areas: "header" "main"; height: auto; min-height: 100vh;}
          #view-container { padding: 30px 25px; max-width: none; margin: 0; }
-         .header { padding: 0 25px; } .search-container { width: 50%; }
+         .header { padding: 0 25px; } .search-container { width: 40%; }
          #entries-list, #notebook-entries-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;}
          #recent-notes-preview-list { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
          .floating-menu { display: block; position: fixed; bottom: 25px; right: 25px; z-index: 900; }
-         .menu-toggle { width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent)); color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s ease; }
+         .menu-toggle { width: 55px; height: 55px; background: var(--primary-accent); color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.3s ease; }
+         .dark-theme .menu-toggle { background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));}
          .menu-toggle:hover { transform: scale(1.05); } .menu-toggle svg { width: 24px; height: 24px; }
          .menu-items { position: absolute; bottom: 70px; right: 0; display: flex; flex-direction: column; gap: 8px; opacity: 0; visibility: hidden; transform: translateY(10px) scale(0.95); transform-origin: bottom right; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; background-color: var(--surface-highlight); padding: 10px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 1px solid var(--border-color); }
          .floating-menu:hover .menu-items { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
          .menu-items a, .menu-items button { display: flex; align-items: center; gap: 10px; padding: 10px 15px; background: none; border: none; color: var(--text-color); text-decoration: none; font-size: 0.95em; border-radius: 6px; cursor: pointer; white-space: nowrap; transition: background-color 0.2s ease; font-family: var(--main-font); }
          .menu-items a svg, .menu-items button svg { width: 18px; height: 18px; opacity: 0.8; }
          .menu-items a:hover, .menu-items button:hover { background-color: rgba(0,0,0,0.1); }
+         .dark-theme .menu-items { background-color: var(--surface-highlight-dark); border-color: var(--border-color-dark);}
          .dark-theme .menu-items a:hover, .dark-theme .menu-items button:hover { background-color: rgba(255,255,255,0.1); }
          .header-nav { display: none;}
-         .dashboard-grid { grid-template-columns: 1fr; } /* Stack stats and tips on tablet */
     }
     @media (max-width: 600px) {
          body { font-size: 15px; }
          #view-container { padding: 20px 15px; }
-         h2, #home-view #recent-notes-preview h3, #notebooks-view h2 { font-size: 1.5em; }
-         #entries-list, #notebook-entries-list { grid-template-columns: 1fr; gap: 20px;}
-         #recent-notes-preview-list { grid-template-columns: 1fr; gap: 20px; }
-         .entry-card img.entry-image { height: 150px; } .card-content { padding: 15px 20px; }
-         #notes-view button.submit-btn { width: 100%; }
-         .modal { padding: 25px 20px; } .modal-header h3 { font-size: 1.3em; }
-         .floating-menu { bottom: 20px; right: 20px; } .menu-toggle { width: 55px; height: 55px; }
-         .menu-items { bottom: 70px; }
-         .header { padding: 0 15px; } .header-title { font-size: 1.2em;} .search-container { display: none; }
+         h2, #home-view #recent-notes-preview h3, #notebooks-view h2 { font-size: 1.4em; }
+         #entries-list, #notebook-entries-list { grid-template-columns: 1fr; gap: 15px;}
+         #recent-notes-preview-list { grid-template-columns: 1fr; gap: 15px; }
+         .dashboard-grid { grid-template-columns: 1fr; }
+         .entry-card img.entry-image { height: 150px; } .card-content { padding: 15px 18px; }
+         #notes-view button.submit-btn { width: 100%; padding: 12px;}
+         .modal { padding: 20px; } .modal-header h3 { font-size: 1.2em; }
+         .floating-menu { bottom: 15px; right: 15px; } .menu-toggle { width: 50px; height: 50px; }
+         .menu-items { bottom: 65px; }
+         .header { padding: 0 15px; } .header-title { font-size: 1.1em;} .search-container { display: none; }
          #settings-modal .input-group { flex-direction: column; align-items: stretch; gap: 8px;}
          #settings-modal .modal-button { width: 100%; margin-right: 0;}
      }
@@ -245,7 +252,7 @@
 <div class="app-wrapper" id="app-start">
   <header class="header">
     <div class="header-left">
-      <a href="index.html" style="text-decoration: none;"><h1 class="sidebar-title"><span class="app-name">Chronicle</span><span>Notes</span></h1></a>
+      <a href="index.html" style="text-decoration: none;"><h1 class="header-title"><span class="app-name">Chronicle</span><span>Notes</span></h1></a>
       <nav class="header-nav">
         <a id="nav-dashboard" class="active-nav"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M8 4a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM8.25 6.75a.75.75 0 000 1.5h3.5a.75.75 0 000-1.5h-3.5zM8 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm.25 2.75a.75.75 0 000 1.5h3.5a.75.75 0 000-1.5h-3.5zM8 16a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm.25 2.75a.75.75 0 000 1.5h3.5a.75.75 0 000-1.5h-3.5z"></path></svg> Dashboard</a>
         <a id="nav-all-notes"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H5a1 1 0 110-2V4zm3 1a1 1 0 011-1h2a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg> All Notes</a>
@@ -260,11 +267,13 @@
         <input type="search" id="search-box" placeholder="Search notes...">
         <span class="ai-indicator">AI ✨</span>
       </div>
-      <nav class="header-nav">
-        <button id="nav-collaborate"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg> Share</button>
-        <button id="nav-drawing"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M15.293 3.293a1 1 0 011.414 0l1 1a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.248-1.248l1-3a1 1 0 01.242-.39l9-9zM14 6l-8.5 8.5-1-1L13 5l1 1zm2-2l-1 1-1-1 1-1 1 1z" clip-rule="evenodd"></path></svg> Draw</button>
-        <button id="nav-settings"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.566.379-1.566 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.566 2.6 1.566 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.566-.379 1.566-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106A1.532 1.532 0 0111.49 3.17zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg> Settings</button>
-      </nav>
+      <button id="header-add-note-btn" title="Add New Note" style="background:var(--primary-accent); color:white; border:none; border-radius:6px; cursor:pointer; padding: 8px 12px; display: flex; align-items:center; gap: 5px; font-size: 0.9rem; font-weight: 500;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
+        Add Note
+      </button>
+      <button id="header-settings-btn" title="Settings" class="header-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.566.379-1.566 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.566 2.6 1.566 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.566-.379 1.566-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106A1.532 1.532 0 0111.49 3.17zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg>
+      </button>
     </div>
   </header>
 
@@ -277,21 +286,18 @@
           <span class="count" id="stats-total-notes">0</span>
         </section>
         <section class="tips-section">
-          <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg> Quick Guide</h3>
+          <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg> User Guide</h3>
           <ul>
             <li>Use <strong>'All Notes'</strong> in the header to see all entries & add new ones.</li>
-            <li>Clicking <strong>'Notebooks'</strong> shows all notes for now (categories coming soon).</li>
-            <li>Notes are saved <strong>locally</strong> in this browser only.</li>
+            <li>Click <strong>'+ Add Note'</strong> to quickly open the entry form.</li>
+            <li>Notes are saved automatically to this browser's <strong>local storage</strong>.</li>
             <li>Change your <strong>Author Name</strong> or toggle <strong>Dark Mode</strong> in Settings (⚙️ icon).</li>
-            <li>Click on a <strong>Recent Note</strong> card below to jump to 'All Notes'.</li>
+            <li>Click on a <strong>Recent Note</strong> card below to jump to the 'All Notes' view.</li>
           </ul>
         </section>
       </div>
       <section id="recent-notes-preview">
-        <h3>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.25 3A2.25 2.25 0 003 5.25v9.5A2.25 2.25 0 005.25 17h9.5A2.25 2.25 0 0017 14.75v-9.5A2.25 2.25 0 0014.75 3H5.25zM9.5 6a.5.5 0 01.5.5v2a.5.5 0 01-1 0V6.5a.5.5 0 01.5-.5zm-.5 4.5a.5.5 0 000 1h1a.5.5 0 000-1h-1zM5 6.25A1.25 1.25 0 107.5 7.5 1.25 1.25 0 005 6.25zm1.75-.5a.25.25 0 01.25.25V7a.25.25 0 01-.5 0V6a.25.25 0 01.25-.25zM10.25 6a.25.25 0 00-.25.25V7a.25.25 0 00.5 0V6.25a.25.25 0 00-.25-.25zm.75 3.5A1.25 1.25 0 1012.5 11 1.25 1.25 0 0011 9.75zm1.75-.5a.25.25 0 01.25.25v.5a.25.25 0 01-.5 0v-.5a.25.25 0 01.25-.25zm-3.5 1.75a.25.25 0 00-.25.25v.5a.25.25 0 00.5 0v-.5a.25.25 0 00-.25-.25z" clip-rule="evenodd" /></svg>
-          Recent Notes
-        </h3>
+        <h3>Recent Notes</h3>
         <ul id="recent-notes-preview-list">
           <p style="color: var(--text-muted-color);">No recent notes to show.</p>
         </ul>
@@ -299,23 +305,25 @@
     </div>
 
     <div id="notes-view" class="view">
-      <section class="form-section">
-        <div class="form-container">
-          <h2>Create or Edit Note</h2>
-          <form id="journal-form">
-            <label for="name">Author Name:</label>
-            <input type="text" id="name" placeholder="Enter author name" required>
-            <label for="title">Note Title:</label>
-            <input type="text" id="title" placeholder="Enter note title" required>
-            <label for="content">Content:</label>
-            <textarea id="content" placeholder="Start writing..." required></textarea>
-            <div class="editor-stats"><span id="char-count">0</span> Chars | <span id="word-count">0</span> Words</div>
-            <label for="imageUrl">Cover Image URL (Optional):</label>
-            <input type="text" id="imageUrl" placeholder="e.g., https://example.com/image.jpg">
-            <button type="submit" class="submit-btn">Save Note</button>
-          </form>
-        </div>
-      </section>
+      <div class="form-container-wrapper">
+        <section class="form-section">
+          <div class="form-container">
+            <h2>Create or Edit Note</h2>
+            <form id="journal-form">
+              <label for="name">Author Name:</label>
+              <input type="text" id="name" placeholder="Enter author name" required>
+              <label for="title">Note Title:</label>
+              <input type="text" id="title" placeholder="Enter note title" required>
+              <label for="content">Content:</label>
+              <textarea id="content" placeholder="Start writing..." required></textarea>
+              <div class="editor-stats"><span id="char-count">0</span> Chars | <span id="word-count">0</span> Words</div>
+              <label for="imageUrl">Cover Image URL (Optional):</label>
+              <input type="text" id="imageUrl" placeholder="e.g., https://example.com/image.jpg">
+              <button type="submit" class="submit-btn">Save Note</button>
+            </form>
+          </div>
+        </section>
+      </div>
       <section class="entries-section">
         <h2>All Notes <span id="entry-count"></span></h2>
         <ul id="entries-list"></ul>
@@ -467,6 +475,8 @@
   const navSettingsLinks = Array.from(document.querySelectorAll('#nav-settings, #fab-settings, #header-settings-btn')).filter(el => el != null);
   const navCollaborateLinks = Array.from(document.querySelectorAll('#nav-collaborate, #fab-collaborate')).filter(el => el != null);
   const navDrawingLinks = Array.from(document.querySelectorAll('#nav-drawing, #fab-drawing')).filter(el => el != null);
+  const headerAddNoteBtn = document.getElementById('header-add-note-btn');
+  const formContainerWrapper = document.querySelector('.form-container-wrapper');
   const views = document.querySelectorAll('.view');
   const storageKey = 'chronicleNotesEntries_saasV3_fixed';
   const themeStorageKey = 'chronicleNotesThemeSaaS_V3_fixed';
@@ -489,7 +499,6 @@
   const editorStatsDiv = document.querySelector('.editor-stats');
   const charCountSpan = document.getElementById('char-count');
   const wordCountSpan = document.getElementById('word-count');
-
 
   document.addEventListener('DOMContentLoaded', () => {
        loadUserPreferences();
@@ -530,8 +539,20 @@
       if(viewContainer) { viewContainer.scrollTo({ top: 0, behavior: 'auto' }); }
 
        if(viewIdToShow === 'notebooks-view') { renderNotebookView(); }
+       if(viewIdToShow !== 'notes-view' && formContainerWrapper) {
+           formContainerWrapper.classList.remove('form-visible');
+       }
   }
 
+   function toggleAddNoteForm() {
+       if (formContainerWrapper) {
+          const isVisible = formContainerWrapper.classList.toggle('form-visible');
+          if (isVisible) {
+               showView('notes-view'); // Ensure notes view is active
+               titleInput?.focus(); // Focus title field when shown
+           }
+       }
+   }
 
   function openModal(modalId) {
       const modal = document.getElementById(modalId);
@@ -558,6 +579,7 @@
       navSettingsLinks.forEach(link => link?.addEventListener('click', (e) => { e.preventDefault(); openModal('settings-modal'); }));
       navCollaborateLinks.forEach(link => link?.addEventListener('click', (e) => { e.preventDefault(); openModal('share-modal'); }));
       navDrawingLinks.forEach(link => link?.addEventListener('click', (e) => { e.preventDefault(); openModal('drawing-modal'); }));
+      headerAddNoteBtn?.addEventListener('click', toggleAddNoteForm);
 
       fabNavLinks.forEach(link => {
            const id = link.id;
@@ -587,7 +609,7 @@
 
    function loadUserPreferences(){
        applySavedTheme();
-       const savedName = localStorage.getItem(userNameKey) || '';
+       const savedName = localStorage.getItem(userNameKey) || 'dark';
        if(nameInput) nameInput.value = savedName;
    }
 
@@ -603,7 +625,7 @@
   }
 
   function applySavedTheme() {
-      const savedTheme = localStorage.getItem(themeStorageKey) || 'dark';
+      const savedTheme = localStorage.getItem(themeStorageKey) || 'light';
       const needsDark = savedTheme === 'dark';
       document.body.classList.toggle('dark-theme', needsDark);
       if(themeSwitch) themeSwitch.checked = needsDark;
@@ -743,8 +765,8 @@
        const charCount = text.length;
        const words = text.trim().split(/\s+/).filter(word => word.length > 0);
        const wordCount = words.length === 1 && words[0] === '' ? 0 : words.length;
-       charCountSpan.textContent = charCount;
-       wordCountSpan.textContent = wordCount;
+       if (charCountSpan) charCountSpan.textContent = charCount;
+       if (wordCountSpan) wordCountSpan.textContent = wordCount;
   }
 
   function addEntry(event) {
@@ -767,6 +789,7 @@
       if(nameInput) nameInput.value = authorNameToSave;
       updateEditorStats();
       showView('notes-view');
+       if (formContainerWrapper) formContainerWrapper.classList.remove('form-visible');
   }
 
   function handleEntryActions(event) {
