@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public  class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleGenericException(IllegalArgumentException ex) {
+    @ExceptionHandler(ObjectNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(ObjectNotFoundException ex) {
         System.out.println("test1");
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
@@ -20,7 +19,7 @@ public  class GlobalExceptionHandler {
                 ex.getMessage(),
                 "ERR_500" // Custom error code
         );
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)

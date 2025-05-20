@@ -5,12 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorResponse {
     
-    private LocalDateTime timestamp;
+    private Date timestamp = new Date();
     private int status;
     private String error;
     private String message;

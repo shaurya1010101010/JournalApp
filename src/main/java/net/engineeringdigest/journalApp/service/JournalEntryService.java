@@ -1,6 +1,7 @@
 package net.engineeringdigest.journalApp.service;
 
 // Imports necessary classes for MongoDB interactions, Entity handling, and Spring Boot annotations
+import ExceptionHandlers.ObjectNotFoundException;
 import net.engineeringdigest.journalApp.Entity.JournalEntry;
 import net.engineeringdigest.journalApp.Repository.JournalEntryRepo;
 import org.bson.types.ObjectId;
@@ -31,6 +32,9 @@ public class JournalEntryService {
     // Finds a journal entry by ID and returns an Optional object to handle null values safely
     public Optional<JournalEntry> findById(String id) {
         try {
+            if(id.equalsIgnoreCase("11")){
+                throw new ObjectNotFoundException("This object is not present");
+            }
             return journalEntryRepository.findById(new ObjectId(id));
         } catch (IllegalArgumentException e) {
             // Handles invalid ObjectId format errors to avoid runtime exceptions
